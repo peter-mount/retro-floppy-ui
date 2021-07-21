@@ -17,8 +17,10 @@ class File extends Component {
       s = t.state,
       info = s.info;
     return (<div className="folder">
-      <FontAwesomeIcon icon={faSave}/>
-      <span className="fileLabel">{info.name}</span>
+      <span>
+        <FontAwesomeIcon icon={faSave}/>
+        <span className="fileLabel">{info.name}</span>
+      </span>
     </div>);
   }
 }
