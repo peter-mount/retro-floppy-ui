@@ -9,9 +9,22 @@ import (
 )
 
 type Config struct {
+	// Config for this node
+	Node struct {
+		Hostname string `yaml:"hostname"`
+	} `yaml:"node"`
+
+	// Web server config
 	Server struct {
-		Port int `yaml:"port"`
+		Port int `yaml:"port"` // Web server port
 	} `yaml:"server"`
+
+	// Volume config - this is where the disk images exposed to the gotek are placed
+	Volume struct {
+		Path   string `yaml:"path"`   // Mount point for vfat volume
+		Mount  string `yaml:"mount"`  // Command to mount the storage onto the gotek
+		Umount string `yaml:"umount"` // Command to unmount the storage so the gotek cannot access it anymore
+	} `yaml:"volume"`
 
 	configFile *string // Path to config file
 }

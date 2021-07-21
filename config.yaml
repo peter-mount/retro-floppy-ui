@@ -1,0 +1,16 @@
+# This is the example config for our server.
+# The settings here match those in the installation instructions and should be enough to get you up and running.
+
+node:
+  hostname: "ida - development"
+
+server:
+  port: 8080
+
+volume:
+  # The mount point for our VFAT formatted volume
+  path: "/mnt/usb_share"
+  # Command to mount the storage onto the gotek
+  mount: "sudo modprobe g_mass_storage file=/piusb.bin stall=0 ro=1"
+  # Command to unmount the storage so the gotek cannot access it anymore
+  umount: "sudo modprobe -r g_mass_storage"
