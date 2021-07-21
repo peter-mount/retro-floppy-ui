@@ -20,7 +20,7 @@
 }
 
 .folder > span > svg {
-    width: 1.5em;
+    width: 1.5em !important;
 }
 
 .folder > span > .fileLabel {

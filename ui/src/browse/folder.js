@@ -35,16 +35,30 @@ class Folder extends Component {
   }
 
   update(t, f) {
-    const p = t.props;
+    const s = t.state;
     t.setState({
-      open: p.open,
-      path: p.path,
+      open: s.open,
+      path: s.path,
       file: f,
+    });
+  }
+
+  toggle(t) {
+    const p = t.props,
+      s = t.state;
+    t.setState({
+      open: p.root ? true : !s.open,
+      path: s.path,
+      file: p.root || !s.open ? s.file : null,
     });
   }
 
   render() {
     const t = this, s = t.state;
+
+    if (s.open && !s.file) {
+      t.refresh()
+    }
 
     let dirs = null, files = null;
 
@@ -70,7 +84,7 @@ class Folder extends Component {
     }
 
     return (<div className="folder">
-      <span>
+      <span onClick={() => t.toggle(t)}>
         <FontAwesomeIcon icon={s.open ? faFolderOpen : faFolder}/>
         <span className="fileLabel">{s.path == "" ? "/" : s.path}</span>
       </span>
