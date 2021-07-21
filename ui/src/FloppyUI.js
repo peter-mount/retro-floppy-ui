@@ -3,9 +3,10 @@ import {BrowserRouter, Route} from 'react-router-dom';
 
 import '../css/App.css';
 import '../css/materialicons.css';
+import '../css/floppyui.css';
 
 // The loaders for each route
-import HomePageLoader from "./loaders/HomePageLoader";
+import BrowseLoader from "./loaders/BrowseLoader";
 
 class FloppyUI extends Component {
 
@@ -17,11 +18,23 @@ class FloppyUI extends Component {
 
   render() {
     return (
-      <BrowserRouter>
-        <div>
-          <Route component={HomePageLoader} exact path='/'/>
+      <div className="uiOuter">
+        <div className="title">Header from config here</div>
+        <div className="statusBar">
+          15Gb free
         </div>
-      </BrowserRouter>
+        <div className="toolbar">
+          Toolbar here
+        </div>
+        <BrowserRouter>
+          <div>
+            <Route component={BrowseLoader} exact path='/'/>
+          </div>
+        </BrowserRouter>
+        <div className="diskRight">
+          Disk mount details
+        </div>
+      </div>
     )
   }
 

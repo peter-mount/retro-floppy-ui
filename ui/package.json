@@ -18,9 +18,10 @@
     "dev": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --history-api-fallback"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^1.2.30",
-    "@fortawesome/free-solid-svg-icons": "^5.14.0",
-    "@fortawesome/react-fontawesome": "^0.1.11",
+    "@fortawesome/fontawesome-svg-core": "^1.2.35",
+    "@fortawesome/free-regular-svg-icons": "^5.15.3",
+    "@fortawesome/free-solid-svg-icons": "^5.15.3",
+    "@fortawesome/react-fontawesome": "^0.1.14",
     "moment": "^2.27.0",
     "moment-timezone": "^0.5.31",
     "prop-types": "^15.7.2",

@@ -1,0 +1,32 @@
+.uiOuter {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.uiOuter > .title {
+    text-align: center;
+    background: black;
+    color: white;
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.uiOuter > .toolbar {
+    height: 2em;
+    border: 1px groove grey;
+}
+
+.folder > span > svg {
+    width: 1.5em;
+}
+
+.folder > span > .fileLabel {
+    margin-left: .5em;
+}
+
+.folder > .folder {
+    margin-left: 1.5em;
+}

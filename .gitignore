@@ -1,6 +1,7 @@
 /dist/
 /temp/
 build
+dist
 npm-debug.log
 /go_build_floppyui
 /ui/node_modules/

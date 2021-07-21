@@ -10,8 +10,8 @@ server:
 
 volume:
   # The mount point for our VFAT formatted volume
-  path: "/mnt/usb_share"
+  path: "/home/peter/tmpDisk"
   # Command to mount the storage onto the gotek
-  mount: "sudo modprobe g_mass_storage file=/piusb.bin stall=0 ro=1"
+  mount: ""
   # Command to unmount the storage so the gotek cannot access it anymore
-  umount: "sudo modprobe -r g_mass_storage"
+  umount: ""
