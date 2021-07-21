@@ -7,6 +7,10 @@
 }
 
 .uiOuter > .title {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
     text-align: center;
     background: black;
     color: white;
@@ -15,7 +19,30 @@
 }
 
 .uiOuter > .toolbar {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 2.8em;
     height: 2em;
+    border: 1px groove grey;
+}
+
+.uiOuter > .statusBar {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2em;
+    border: 1px groove grey;
+}
+
+.browseOuter {
+    position: absolute;
+    left: 0;
+    right: 50%;
+    bottom: 2.1em;
+    top: 4.9em;
+    overflow: auto;
     border: 1px groove grey;
 }
 
