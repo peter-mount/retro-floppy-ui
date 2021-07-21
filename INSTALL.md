@@ -19,6 +19,8 @@ Follow the standard instructions for installing the OS, just ensure that you hav
 * SSH enabled
 * Connected to your WiFi network
 
+You can do all of those from the command line using raspi-config
+
 ### Enable the USB driver
 
 Next, we need to enable the USB driver which provides the gadget modes, by editing two configuration files.
@@ -29,7 +31,7 @@ Scroll to the bottom and append the line below:
 
     dtoverlay=dwc2
 
-Press CTRL+O followed by Enter to save, and then CTRL+X to quit.
+Next add the module so it's loaded on startup:
 
     sudo nano /etc/modules
 
@@ -80,3 +82,4 @@ For example:
     tmpfs            44M     0   44M   0% /run/user/1000
     /dev/loop0       16G  8.0K   16G   1% /mnt/usb_share
 
+If all has gone well reboot the PI.
