@@ -1,14 +1,15 @@
-package server
+package api
 
 import (
 	"github.com/gorilla/handlers"
+	config2 "github.com/peter-mount/floppyui/server/config"
 	"github.com/peter-mount/go-kernel"
 	"github.com/peter-mount/go-kernel/rest"
 )
 
 type Api struct {
-	config      *Config      // Config file
-	restService *rest.Server // web server
+	config      *config2.Config // Config file
+	restService *rest.Server    // web server
 }
 
 func (a *Api) Name() string {
@@ -16,11 +17,11 @@ func (a *Api) Name() string {
 }
 
 func (a *Api) Init(k *kernel.Kernel) error {
-	service, err := k.AddService(&Config{})
+	service, err := k.AddService(&config2.Config{})
 	if err != nil {
 		return err
 	}
-	a.config = (service).(*Config)
+	a.config = (service).(*config2.Config)
 
 	service, err = k.AddService(&rest.Server{})
 	if err != nil {
@@ -33,14 +34,18 @@ func (a *Api) Init(k *kernel.Kernel) error {
 
 func (a *Api) PostInit() error {
 
+	rest := a.restService
+
 	// The port to use for rest service
-	a.restService.Port = a.config.Server.Port
-	if a.restService.Port < 1024 || a.restService.Port > 65535 {
-		a.restService.Port = 3000
+	rest.Port = a.config.Server.Port
+	if rest.Port < 1024 || a.restService.Port > 65535 {
+		rest.Port = 3000
 	}
 
 	// Add compression to output
-	a.restService.Use(handlers.CompressHandler)
+	rest.Use(handlers.CompressHandler)
+
+	rest.Handle("/api/list/{path:[0-9a-zA-Z/._ -]*}", a.listFiles).Methods("GET")
 
 	return nil
 }

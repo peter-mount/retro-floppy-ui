@@ -1,4 +1,4 @@
-package server
+package config
 
 import (
 	"flag"
@@ -16,7 +16,8 @@ type Config struct {
 
 	// Web server config
 	Server struct {
-		Port int `yaml:"port"` // Web server port
+		Port   int    `yaml:"port"`   // Web server port
+		Static string `yaml:"static"` // Static directory with UI
 	} `yaml:"server"`
 
 	// Volume config - this is where the disk images exposed to the gotek are placed
