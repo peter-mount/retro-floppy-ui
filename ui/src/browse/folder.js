@@ -86,12 +86,20 @@ class Folder extends Component {
     return (<div className="folder">
       <span onClick={() => t.toggle(t)}>
         <FontAwesomeIcon icon={s.open ? faFolderOpen : faFolder}/>
-        <span className="fileLabel">{s.path == "" ? "/" : s.path}</span>
+        <span className="fileLabel">{s.path == "" ? "/" : baseName(s.path)}</span>
       </span>
       {dirs}{files}
     </div>);
   }
 
+}
+
+function baseName(str) {
+  let base = String(str).substring(str.lastIndexOf('/') + 1);
+  if (base.lastIndexOf(".") !== -1) {
+    base = base.substring(0, base.lastIndexOf("."));
+  }
+  return base;
 }
 
 export default Folder;
