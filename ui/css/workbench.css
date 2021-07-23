@@ -1,5 +1,6 @@
 body {
     background: #aaaaaa !important;
+    overflow: hidden;
 }
 
 .workbench {
@@ -26,11 +27,14 @@ body {
 }
 
 .window {
+    position: relative;
     background: #aaaaaa;
     min-height: 20em;
     min-width: 20em;
     height: 20em;
     width: 20em;
+    display: flex;
+    flex-direction: column;
 }
 
 .window,
@@ -60,7 +64,7 @@ body {
 }
 
 .windowBody {
-    height: 100%;
     background: #aaaaaa;
     overflow: auto;
+    flex-grow: 1;
 }
