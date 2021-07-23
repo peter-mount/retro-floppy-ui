@@ -54,11 +54,15 @@
     margin-left: .5em;
 }
 
-.folder > .folder {
+.folder > div {
     margin-left: 0.7em;
     padding-left: 0.75em;
+}
+
+.folder:not(:last-child) > div {
     border-left: 1px dashed black;
 }
+
 .folder > span:hover {
     background: #ddd;
 }

@@ -88,7 +88,7 @@ class Volume extends Component {
         <FontAwesomeIcon icon={faHdd}/>
         <span className="fileLabel">{p.name}</span>
       </span>
-      {dirs}{files}
+      <div>{dirs}{files}</div>
     </div>);
   }
 

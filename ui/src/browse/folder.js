@@ -89,7 +89,7 @@ class Folder extends Component {
         <FontAwesomeIcon icon={s.open ? faFolderOpen : faFolder}/>
         <span className="fileLabel">{s.path == "" ? "/" : baseName(s.path)}</span>
       </span>
-      {dirs}{files}
+      <div>{dirs}{files}</div>
     </div>);
   }
 
