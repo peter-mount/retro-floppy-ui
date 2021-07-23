@@ -7,7 +7,6 @@ import (
 	"golang.org/x/sys/unix"
 	"log"
 	"os"
-	"path"
 	"sort"
 	"sync"
 )
@@ -18,12 +17,10 @@ const (
 )
 
 type VolumeManager struct {
-	config *config.Config // Config file
-	exec   *util.Exec     // Command executor
-
-	mutex   sync.Mutex
-	volumes map[string]*Volume
-	names   []string
+	config  *config.Config     // Config file
+	exec    *util.Exec         // Command executor
+	mutex   sync.Mutex         // Mutex to allow atomic updates
+	volumes map[string]*Volume // Map of available volumes
 }
 
 func (v *VolumeManager) Name() string {
@@ -50,17 +47,13 @@ func (v *VolumeManager) PostInit() error {
 
 	v.volumes = make(map[string]*Volume)
 
-	sort.SliceStable(v.names, func(i, j int) bool {
-		return v.names[i] < v.names[j]
-	})
-
 	return nil
 }
 
 func (v *VolumeManager) Start() error {
 	log.Println("Initialising volumes")
 
-	// Ensure volumes directory exist exist
+	// Ensure volumes directory exist
 	err := v.exec.Mkdir(Volumes)
 	if err != nil {
 		return err
@@ -72,26 +65,40 @@ func (v *VolumeManager) Start() error {
 	}
 
 	// Scan for volumes
-	return util.ForEachFile(Volumes, func(f os.FileInfo) error {
+	err = util.ForEachFile(Volumes, func(f os.FileInfo) error {
 		if !f.IsDir() {
 			return v.AddVolume(f.Name())
 		}
 		return nil
 	})
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
+// Stop the volumes unmounting them
+// FIXME this fails probably down to the signal terminating it cancelling the umount commands
+func (v *VolumeManager) Stop() {
+	log.Println("Unmounting volumes")
+
+	_ = v.ForEach(func(volume *Volume) error {
+		_ = volume.Umount()
+		return nil
+	})
+}
+
+// AddVolume dds a volume to the manager
 func (v *VolumeManager) AddVolume(n string) error {
+	v.mutex.Lock()
+	defer v.mutex.Unlock()
 
 	if _, exists := v.volumes[n]; exists {
 		return nil
 	}
 
-	vol := &Volume{
-		vm:         v,
-		Name:       n,
-		MountPoint: path.Join(Mounts, n),
-		Volume:     path.Join(Volumes, n),
-	}
+	vol := v.newVolume(n)
 
 	//log.Println("Found volume", n)
 
@@ -113,19 +120,37 @@ func (v *VolumeManager) AddVolume(n string) error {
 		return err
 	}
 
-	log.Println(vol)
-
 	return nil
 }
 
+// GetVolume returns a Volume by name. returns nil if the name is not matched
 func (v *VolumeManager) GetVolume(name string) *Volume {
 	v.mutex.Lock()
 	defer v.mutex.Unlock()
 	return v.volumes[name]
 }
 
+// GetVolumeNames returns a sorted slice of volume names
+func (v *VolumeManager) GetVolumeNames() []string {
+	v.mutex.Lock()
+	defer v.mutex.Unlock()
+	var a []string
+
+	for k, _ := range v.volumes {
+		a = append(a, k)
+	}
+
+	sort.SliceStable(a, func(i, j int) bool {
+		return a[i] < a[j]
+	})
+
+	return a
+}
+
+// ForEach will call a function for each mounted volume.
+// The invocation order is by sorted list of volume names
 func (v *VolumeManager) ForEach(f func(*Volume) error) error {
-	for _, n := range v.names {
+	for _, n := range v.GetVolumeNames() {
 		e := v.GetVolume(n)
 		if e != nil {
 			err := f(e)
