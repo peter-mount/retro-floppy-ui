@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 
-import {withRouter} from 'react-router';
 import Window from "../workbench/window";
 
 class VolumeInfo extends Component {
@@ -23,4 +22,4 @@ class VolumeInfo extends Component {
 
 }
 
-export default withRouter(VolumeInfo);
+export default VolumeInfo;

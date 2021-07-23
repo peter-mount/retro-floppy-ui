@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
 
-import {withRouter} from 'react-router';
 import Volumes from "./volumes";
-import VolumeInfo from "./volumeinfo";
 
 class BrowsePage extends Component {
 
@@ -33,4 +31,4 @@ class BrowsePage extends Component {
 
 }
 
-export default withRouter(BrowsePage);
+export default BrowsePage;
