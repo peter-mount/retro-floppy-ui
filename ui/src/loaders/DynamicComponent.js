@@ -16,7 +16,8 @@ class DynamicComponent extends Component {
     const t = this,
       props = t.props,
       importer = props.import,
-      spin = props.spin;
+      // force spin=true to disable the spinner
+      spin = true;//props.spin;
 
     // Need to yield the thread before calling so any animation can start
     setTimeout(() => {
