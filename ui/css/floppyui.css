@@ -45,8 +45,7 @@
     overflow: hidden;
 }
 
-.browserRight,
-.volumes {
+.browserRight {
     position: absolute;
     bottom: 0em;
     top: 0em;
@@ -54,15 +53,13 @@
     margin: 0.125em;
 }
 
-.volumes,
 .browserLeft {
     left: 0;
     right: 50%;
     overflow: auto;
 }
 
-.browserRight
-{
+.browserRight {
     left: 50%;
     right: 0;
     overflow: auto;
@@ -93,8 +90,4 @@
 
 .folder:not(:last-child) > div {
     border-left: 1px dashed black;
-}
-
-.folder > span:hover {
-    background: #ddd;
 }

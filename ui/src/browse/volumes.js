@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faServer} from '@fortawesome/free-solid-svg-icons';
 import Volume from "./volume";
+import Window from "../workbench/window";
 
 class Volumes extends Component {
 
@@ -48,15 +49,16 @@ class Volumes extends Component {
         })
     }
 
-    return (<div className="volumes">
-      <div className="folder">
-        <span>
-          <FontAwesomeIcon icon={faServer}/>
-          <span className="fileLabel">{p.hostname}</span>
-        </span>
-        <div>{volumes}</div>
-      </div>
-    </div>);
+    return (
+      <Window className="volumes" title="File Explorer">
+        <div className="folder">
+          <span>
+            <FontAwesomeIcon icon={faServer}/>
+            <span className="fileLabel">{p.hostname}</span>
+          </span>
+          <div>{volumes}</div>
+        </div>
+      </Window>);
   }
 
 }

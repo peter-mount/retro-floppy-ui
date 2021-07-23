@@ -28,10 +28,7 @@ class BrowsePage extends Component {
 
   render() {
     const t = this, s = t.state, callBack = o => t.update(o);
-    return (<div className="browseOuter">
-      <Volumes hostname="ida" browser={callBack}/>
-      <VolumeInfo volume={s.volume} browser={callBack}/>
-    </div>);
+    return <Volumes hostname="ida" browser={callBack}/>
   }
 
 }

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 
 import {withRouter} from 'react-router';
+import Window from "../workbench/window";
 
 class VolumeInfo extends Component {
 
@@ -15,9 +16,9 @@ class VolumeInfo extends Component {
 
   render() {
     const t = this,p=t.props;
-    return (<div className="volumeInfo browserRight">
+    return (<Window className="volumeInfo browserRight" title="Selected Volume">
       <span>Volume info "{p.volume}"</span>
-    </div>);
+    </Window>);
   }
 
 }

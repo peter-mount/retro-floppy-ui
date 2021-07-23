@@ -8,6 +8,9 @@ import '../css/floppyui.css';
 // The loaders for each route
 import BrowseLoader from "./loaders/BrowseLoader";
 import Diskstatus from "./util/diskstatus";
+import Workbench from "./workbench/workbench";
+import WorkbenchStatus from "./workbench/workbenchStatus";
+import WorkbenchBody from "./workbench/workbenchBody";
 
 class FloppyUI extends Component {
 
@@ -31,32 +34,21 @@ class FloppyUI extends Component {
   }
 
   render() {
-    const t = this, s = t.state;
+    const t = this,
+      s = t.state,
+      status = s ? s.host.hostname + " - " + s.host.computer : "";
 
-    if (s) {
-      return (
-        <div className="uiOuter">
-          <div className="title">{s.host.hostname} - {s.host.computer}</div>
-          <div className="statusBar">
-            <Diskstatus disk={s.disk}/>
-          </div>
-          <div className="toolbar">
-            Toolbar here
-          </div>
+    return (
+      <Workbench>
+        <WorkbenchStatus>{status}</WorkbenchStatus>
+        <WorkbenchBody>
           <BrowserRouter>
             <div>
               <Route component={BrowseLoader} exact path='/'/>
             </div>
           </BrowserRouter>
-          <div className="diskRight">
-            Disk mount details
-          </div>
-        </div>
-      )
-    }
-
-    return (
-      <div className="uiOuter"></div>
+        </WorkbenchBody>
+      </Workbench>
     )
   }
 

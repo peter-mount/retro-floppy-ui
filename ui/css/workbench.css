@@ -1,0 +1,66 @@
+body {
+    background: #aaaaaa !important;
+}
+
+.workbench {
+    background: #aaaaaa;
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    margin: 1em;
+}
+
+.workbenchTitle {
+    background: white;
+    color: black;
+    text-align: left;
+    padding: 2px 2px 2px 2px;
+    height: 1.5em;
+}
+
+.workbenchBody {
+    text-align: left;
+    height: 100%;
+}
+
+.window {
+    background: #aaaaaa;
+    min-height: 20em;
+    min-width: 20em;
+    height: 20em;
+    width: 20em;
+}
+
+.window,
+.raised {
+    border-left: 1px solid white;
+    border-top: 1px solid white;
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
+}
+
+.windowBody,
+.sunken {
+    border-left: 1px solid black;
+    border-top: 1px solid black;
+    border-bottom: 1px solid white;
+    border-right: 1px solid white;
+}
+
+.windowTitle {
+    background: #5c799c;
+    font-weight: bold;
+    color: black;
+    text-align: left;
+    padding-left: 0.125em;
+    padding-right: 0.125em;
+    height: 1.5em;
+}
+
+.windowBody {
+    height: 100%;
+    background: #aaaaaa;
+    overflow: auto;
+}
