@@ -1,16 +1,15 @@
 import React, {Component} from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faFolder, faFolderOpen} from '@fortawesome/free-regular-svg-icons';
+import {faMinusSquare, faPlusSquare, faHdd} from '@fortawesome/free-regular-svg-icons';
 import File from "./file";
+import Folder from "./folder";
 
-class Folder extends Component {
+class Volume extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
       open: props.open,
-      path: props.path,
-      info: props.info
     };
   }
 
@@ -22,9 +21,9 @@ class Folder extends Component {
   }
 
   refresh() {
-    const t = this, p = t.props, s = t.state;
+    const t = this, p=t.props,s = t.state;
 
-    let url = '/api/list/' + p.volume + '/' + s.path;
+    let url = '/api/list/' + p.name+"/";
 
     fetch(url)
       .then(res => res.json())
@@ -38,7 +37,6 @@ class Folder extends Component {
     const s = t.state;
     t.setState({
       open: s.open,
-      path: s.path,
       file: f,
     });
   }
@@ -54,7 +52,7 @@ class Folder extends Component {
   }
 
   render() {
-    const t = this, p = t.props, s = t.state;
+    const t = this, p=t.props,s = t.state;
 
     if (s.open && !s.file) {
       t.refresh()
@@ -68,7 +66,7 @@ class Folder extends Component {
         .map((f, i) => {
           return <Folder
             key={f.path}
-            volume={p.volume}
+            volume={p.name}
             path={f.path}
             info={f}
           />
@@ -77,7 +75,7 @@ class Folder extends Component {
       files = s.file.files
         .filter(f => !f.dir)
         .map((f, i) => {
-          return <File key={f.path} volume={p.volume} path={f.path} info={f}/>
+          return <File key={f.path} volume={p.name} path={f.path} info={f}/>
         })
 
       dirs.sort((a, b) => a.name < b.name)
@@ -86,8 +84,9 @@ class Folder extends Component {
 
     return (<div className="folder">
       <span onClick={() => t.toggle(t)}>
-        <FontAwesomeIcon icon={s.open ? faFolderOpen : faFolder}/>
-        <span className="fileLabel">{s.path == "" ? "/" : baseName(s.path)}</span>
+        <FontAwesomeIcon icon={s.open ? faMinusSquare : faPlusSquare}/>
+        <FontAwesomeIcon icon={faHdd}/>
+        <span className="fileLabel">{p.name}</span>
       </span>
       {dirs}{files}
     </div>);
@@ -95,12 +94,4 @@ class Folder extends Component {
 
 }
 
-function baseName(str) {
-  let base = String(str).substring(str.lastIndexOf('/') + 1);
-  if (base.lastIndexOf(".") !== -1) {
-    base = base.substring(0, base.lastIndexOf("."));
-  }
-  return base;
-}
-
-export default Folder;
+export default Volume;

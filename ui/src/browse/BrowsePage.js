@@ -1,9 +1,7 @@
 import React, {Component} from 'react';
 
 import {withRouter} from 'react-router';
-import {AsyncTypeahead} from 'react-bootstrap-typeahead';
-import config from 'react-global-configuration';
-import Folder from "./folder";
+import Volumes from "./volumes";
 
 class BrowsePage extends Component {
 
@@ -19,9 +17,7 @@ class BrowsePage extends Component {
   render() {
     const t = this;
     return (<div className="browseOuter">
-      <div>
-        <Folder path="" open={true} root={true}/>
-      </div>
+      <Volumes/>
     </div>);
   }
 

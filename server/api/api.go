@@ -2,14 +2,12 @@ package api
 
 import (
 	"github.com/gorilla/handlers"
-	config2 "github.com/peter-mount/floppyui/server/config"
 	"github.com/peter-mount/floppyui/server/volume"
 	"github.com/peter-mount/go-kernel"
 	"github.com/peter-mount/go-kernel/rest"
 )
 
 type Api struct {
-	config      *config2.Config       // Config file
 	restService *rest.Server          // web server
 	vm          *volume.VolumeManager // Volume manager
 }
@@ -19,13 +17,14 @@ func (a *Api) Name() string {
 }
 
 func (a *Api) Init(k *kernel.Kernel) error {
-	service, err := k.AddService(&config2.Config{})
-	if err != nil {
-		return err
-	}
-	a.config = (service).(*config2.Config)
 
-	service, err = k.AddService(&rest.Server{})
+	service, err := k.AddService(&rest.Server{
+		Headers: nil,
+		Origins: nil,
+		Methods: nil,
+		Address: "127.0.0.1", // Bind to localhost as apache will front it
+		Port:    8080,        // Port apache will proxy to
+	})
 	if err != nil {
 		return err
 	}
@@ -44,16 +43,13 @@ func (a *Api) PostInit() error {
 
 	rest := a.restService
 
-	// The port to use for rest service
-	rest.Port = a.config.Server.Port
-	if rest.Port < 1024 || a.restService.Port > 65535 {
-		rest.Port = 3000
-	}
-
 	// Add compression to output
 	rest.Use(handlers.CompressHandler)
 
+	// System status
 	rest.Handle("/api/status", a.getStatus).Methods("GET")
+
+	rest.Handle("/api/list", a.listVolumes).Methods("GET")
 	rest.Handle("/api/list/{volume}/{path:[0-9a-zA-Z/._ -]*}", a.listFiles).Methods("GET")
 
 	return nil

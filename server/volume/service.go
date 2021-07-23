@@ -1,7 +1,6 @@
 package volume
 
 import (
-	"github.com/peter-mount/floppyui/server/config"
 	"github.com/peter-mount/floppyui/server/util"
 	"github.com/peter-mount/go-kernel"
 	"golang.org/x/sys/unix"
@@ -17,7 +16,6 @@ const (
 )
 
 type VolumeManager struct {
-	config  *config.Config     // Config file
 	exec    *util.Exec         // Command executor
 	mutex   sync.Mutex         // Mutex to allow atomic updates
 	volumes map[string]*Volume // Map of available volumes
@@ -28,13 +26,7 @@ func (v *VolumeManager) Name() string {
 }
 
 func (v *VolumeManager) Init(k *kernel.Kernel) error {
-	service, err := k.AddService(&config.Config{})
-	if err != nil {
-		return err
-	}
-	v.config = (service).(*config.Config)
-
-	service, err = k.AddService(&util.Exec{})
+	service, err := k.AddService(&util.Exec{})
 	if err != nil {
 		return err
 	}

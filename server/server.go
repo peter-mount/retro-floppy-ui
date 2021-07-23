@@ -2,18 +2,16 @@ package server
 
 import (
 	api2 "github.com/peter-mount/floppyui/server/api"
-	config2 "github.com/peter-mount/floppyui/server/config"
 	"github.com/peter-mount/floppyui/server/util"
 	"github.com/peter-mount/floppyui/server/volume"
 	"github.com/peter-mount/go-kernel"
 )
 
 type Server struct {
-	config *config2.Config       // Config file
-	api    *api2.Api             // API
-	ui     *UI                   // UI
-	vm     *volume.VolumeManager // Volume manager
-	exec   *util.Exec            // Command executor
+	api  *api2.Api             // API
+	ui   *UI                   // UI
+	vm   *volume.VolumeManager // Volume manager
+	exec *util.Exec            // Command executor
 }
 
 func (s *Server) Name() string {
@@ -21,13 +19,7 @@ func (s *Server) Name() string {
 }
 
 func (s *Server) Init(k *kernel.Kernel) error {
-	service, err := k.AddService(&config2.Config{})
-	if err != nil {
-		return err
-	}
-	s.config = (service).(*config2.Config)
-
-	service, err = k.AddService(&util.Exec{})
+	service, err := k.AddService(&util.Exec{})
 	if err != nil {
 		return err
 	}

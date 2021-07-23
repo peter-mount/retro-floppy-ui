@@ -55,5 +55,10 @@
 }
 
 .folder > .folder {
-    margin-left: 1.5em;
+    margin-left: 0.7em;
+    padding-left: 0.75em;
+    border-left: 1px dashed black;
+}
+.folder > span:hover {
+    background: #ddd;
 }

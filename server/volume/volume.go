@@ -70,7 +70,7 @@ func (v *Volume) setError(s string, err error) error {
 
 // LocalPath returns the path on the PI of a file in the mounted volume
 func (v *Volume) LocalPath(p string) string {
-	return path.Join(v.Name(), p)
+	return path.Join(v.MountPoint(), p)
 }
 
 // Statfs updates the provided unix.Statfs_t with details of this Volume

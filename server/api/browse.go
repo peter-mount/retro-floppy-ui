@@ -3,6 +3,7 @@ package api
 import (
 	"github.com/peter-mount/go-kernel/rest"
 	"io/ioutil"
+	"log"
 	"os"
 	"path"
 	"time"
@@ -54,8 +55,10 @@ func (a *Api) listFiles(r *rest.Rest) error {
 	p = path.Clean("/" + p)
 	lp := vol.LocalPath(p)
 
+	log.Println(lp)
 	fi, err := os.Stat(lp)
 	if err != nil {
+		log.Println("Stat", err)
 		return err
 	}
 
@@ -74,6 +77,7 @@ func (a *Api) listFiles(r *rest.Rest) error {
 
 		files, err := ioutil.ReadDir(lp)
 		if err != nil {
+			log.Println("ReadDir", err)
 			return err
 		}
 

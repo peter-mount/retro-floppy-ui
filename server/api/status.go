@@ -1,21 +1,32 @@
 package api
 
 import (
-	"github.com/peter-mount/floppyui/server/config"
 	"github.com/peter-mount/floppyui/server/volume"
 	"github.com/peter-mount/go-kernel/rest"
 	"golang.org/x/sys/unix"
+	"os"
 )
 
 type Status struct {
-	Host config.Host              `json:"host"`
+	Host Host                     `json:"host"`
 	Disk map[string]unix.Statfs_t `json:"disk"`
+}
+
+type Host struct {
+	Hostname string `json:"hostname"`
+	Title    string `json:"title"`
+	Computer string `json:"computer"`
 }
 
 func (a *Api) getStatus(r *rest.Rest) error {
 
+	hostname, _ := os.Hostname()
 	response := Status{
-		Host: a.config.Host,
+		Host: Host{
+			Hostname: hostname,
+			Title:    "",
+			Computer: "",
+		},
 		Disk: make(map[string]unix.Statfs_t),
 	}
 
