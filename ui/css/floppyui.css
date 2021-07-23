@@ -46,6 +46,10 @@
     border: 1px groove grey;
 }
 
+.folder > span {
+    display: inline-block;
+}
+
 .folder > span > svg {
     width: 1.5em !important;
 }

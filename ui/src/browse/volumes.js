@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faSquare, faPlusSquare, faHdd, faFolder, faFolderOpen} from '@fortawesome/free-regular-svg-icons';
-import File from "./file";
+import {faServer} from '@fortawesome/free-solid-svg-icons';
 import Volume from "./volume";
 
 class Volumes extends Component {
@@ -48,8 +47,13 @@ class Volumes extends Component {
           return <Volume key={f} name={f}/>
         })
     }
-
-    return (<div>{volumes}</div>)
+    return (<div className="folder">
+      <span>
+        <FontAwesomeIcon icon={faServer}/>
+        <span className="fileLabel">ida</span>
+      </span>
+      <div>{volumes}</div>
+    </div>);
   }
 
 }
