@@ -75,6 +75,10 @@ func (v *VolumeManager) Start() error {
 		return err
 	}
 
+	if len(v.volumes) == 0 {
+		go v.createInitialVolume()
+	}
+
 	return nil
 }
 
@@ -160,4 +164,11 @@ func (v *VolumeManager) ForEach(f func(*Volume) error) error {
 		}
 	}
 	return nil
+}
+
+// createInitialVolume creates an initial volume if none exists.
+// It will create a 2GiB volume with a default name
+func (v *VolumeManager) createInitialVolume() {
+	vol := v.newVolume("Disks")
+	_ = vol.Create(2048)
 }
