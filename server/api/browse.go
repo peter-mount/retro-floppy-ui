@@ -43,10 +43,16 @@ func getFileEntry(p string, fi os.FileInfo) FileEntry {
 
 func (a *Api) listFiles(r *rest.Rest) error {
 
+	vol := a.vm.GetVolume(r.Var("volume"))
+	if vol == nil {
+		r.Status(404)
+		return nil
+	}
+
 	p := r.Var("path")
 
 	p = path.Clean("/" + p)
-	lp := path.Join(a.config.Volume.Path, p)
+	lp := vol.LocalPath(p)
 
 	fi, err := os.Stat(lp)
 	if err != nil {

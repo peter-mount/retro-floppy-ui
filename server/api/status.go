@@ -1,39 +1,39 @@
 package api
 
 import (
-  "github.com/peter-mount/floppyui/server/config"
-  "github.com/peter-mount/go-kernel/rest"
-  "golang.org/x/sys/unix"
+	"github.com/peter-mount/floppyui/server/config"
+	"github.com/peter-mount/floppyui/server/volume"
+	"github.com/peter-mount/go-kernel/rest"
+	"golang.org/x/sys/unix"
 )
 
 type Status struct {
-  Host config.Host   `json:"host"`
-  Disk unix.Statfs_t `json:"disk"`
-}
-
-type DiskStatus struct {
-  Type    int64  `json:"type"`
-  Bsize   int64  `json:"bsize"`
-  Blocks  uint64 `json:"blocks"`
-  Bfree   uint64 `json:"bfree"`
-  Bavail  uint64 `json:"bavail"`
-  Files   uint64 `json:"files"`
-  Ffree   uint64 `json:"ffree"`
-  Namelen int64  `json:"namelen"`
+	Host config.Host              `json:"host"`
+	Disk map[string]unix.Statfs_t `json:"disk"`
 }
 
 func (a *Api) getStatus(r *rest.Rest) error {
 
-  response := Status{Host: a.config.Host}
+	response := Status{
+		Host: a.config.Host,
+		Disk: make(map[string]unix.Statfs_t),
+	}
 
-  err := unix.Statfs(a.config.Volume.Path, &response.Disk)
-  if err != nil {
-    return err
-  }
+	err := a.vm.ForEach(func(volume *volume.Volume) error {
+		var s unix.Statfs_t
+		err := volume.Statfs(&s)
+		if err == nil {
+			//      response.Disk[volume.Config.Name] = s
+		}
+		return err
+	})
+	if err != nil {
+		return err
+	}
 
-  r.Status(200).
-    JSON().
-    Value(&response)
+	r.Status(200).
+		JSON().
+		Value(&response)
 
-  return nil
+	return nil
 }

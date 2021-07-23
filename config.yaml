@@ -10,10 +10,8 @@ server:
   port: 8080
   static: ui/dist
 
+# List of available FAT32 volumes.
+# Normally you only have one available but multiple volumes are supported.
 volume:
-  # The mount point for our VFAT formatted volume
-  path: "/mnt/usb_share"
-  # Command to mount the storage onto the gotek
-  mount: "sudo modprobe g_mass_storage file=/piusb.bin stall=0 ro=1"
-  # Command to unmount the storage so the gotek cannot access it anymore
-  umount: "sudo modprobe -r g_mass_storage"
+  - mount: "/mnt/usb_share"
+    device: "/piusb.bin"
