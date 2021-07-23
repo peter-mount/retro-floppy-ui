@@ -37,22 +37,25 @@ class Volumes extends Component {
   }
 
   render() {
-    const t = this, s = t.state;
+    const t = this, p = t.props, s = t.state;
 
     let volumes = null;
 
     if (s.volumes) {
       volumes = s.volumes
         .map((f, i) => {
-          return <Volume key={f} name={f}/>
+          return <Volume key={f} name={f} browser={p.browser}/>
         })
     }
-    return (<div className="folder">
-      <span>
-        <FontAwesomeIcon icon={faServer}/>
-        <span className="fileLabel">ida</span>
-      </span>
-      <div>{volumes}</div>
+
+    return (<div className="volumes">
+      <div className="folder">
+        <span>
+          <FontAwesomeIcon icon={faServer}/>
+          <span className="fileLabel">{p.hostname}</span>
+        </span>
+        <div>{volumes}</div>
+      </div>
     </div>);
   }
 

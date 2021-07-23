@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faMinusSquare, faPlusSquare, faHdd} from '@fortawesome/free-regular-svg-icons';
+import {faHdd as faHddSelected} from '@fortawesome/free-solid-svg-icons';
 import File from "./file";
 import Folder from "./folder";
 
@@ -21,9 +22,9 @@ class Volume extends Component {
   }
 
   refresh() {
-    const t = this, p=t.props,s = t.state;
+    const t = this, p = t.props, s = t.state;
 
-    let url = '/api/list/' + p.name+"/";
+    let url = '/api/list/' + p.name + "/";
 
     fetch(url)
       .then(res => res.json())
@@ -44,15 +45,24 @@ class Volume extends Component {
   toggle(t) {
     const p = t.props,
       s = t.state;
+
     t.setState({
       open: p.root ? true : !s.open,
       path: s.path,
       file: p.root || !s.open ? s.file : null,
     });
+
+    p.browser({
+      volume: p.name
+    })
   }
 
   render() {
-    const t = this, p=t.props,s = t.state;
+    const t = this,
+      p = t.props,
+      s = t.state,
+      pState = p.browser(null),
+      pVol = pState ? pState.volume : null;
 
     if (s.open && !s.file) {
       t.refresh()
@@ -69,13 +79,20 @@ class Volume extends Component {
             volume={p.name}
             path={f.path}
             info={f}
+            browser={p.browser}
           />
         })
 
       files = s.file.files
         .filter(f => !f.dir)
         .map((f, i) => {
-          return <File key={f.path} volume={p.name} path={f.path} info={f}/>
+          return <File
+            key={f.path}
+            volume={p.name}
+            path={f.path}
+            info={f}
+            browser={p.browser}
+          />
         })
 
       dirs.sort((a, b) => a.name < b.name)
@@ -85,7 +102,7 @@ class Volume extends Component {
     return (<div className="folder">
       <span onClick={() => t.toggle(t)}>
         <FontAwesomeIcon icon={s.open ? faMinusSquare : faPlusSquare}/>
-        <FontAwesomeIcon icon={faHdd}/>
+        <FontAwesomeIcon icon={pVol === p.name ? faHddSelected : faHdd}/>
         <span className="fileLabel">{p.name}</span>
       </span>
       <div>{dirs}{files}</div>

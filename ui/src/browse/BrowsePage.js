@@ -2,22 +2,35 @@ import React, {Component} from 'react';
 
 import {withRouter} from 'react-router';
 import Volumes from "./volumes";
+import VolumeInfo from "./volumeinfo";
 
 class BrowsePage extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {options: []};
+    this.state = {};
   }
 
   componentDidMount() {
-    this.setState({options: []});
+    this.setState({});
+  }
+
+  update(v) {
+    if (v === null) {
+      return this.state
+    }
+
+    let o = {}
+    Object.assign(o, this.state, v)
+    this.setState(o)
+    console.log("update", o)
   }
 
   render() {
-    const t = this;
+    const t = this, s = t.state, callBack = o => t.update(o);
     return (<div className="browseOuter">
-      <Volumes/>
+      <Volumes hostname="ida" browser={callBack}/>
+      <VolumeInfo volume={s.volume} browser={callBack}/>
     </div>);
   }
 

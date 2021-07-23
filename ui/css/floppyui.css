@@ -39,15 +39,43 @@
 .browseOuter {
     position: absolute;
     left: 0;
-    right: 50%;
+    right: 0;
     bottom: 2.1em;
     top: 4.9em;
-    overflow: auto;
+    overflow: hidden;
+}
+
+.browserRight,
+.volumes {
+    position: absolute;
+    bottom: 0em;
+    top: 0em;
     border: 1px groove grey;
+    margin: 0.125em;
+}
+
+.volumes,
+.browserLeft {
+    left: 0;
+    right: 50%;
+    overflow: auto;
+}
+
+.browserRight
+{
+    left: 50%;
+    right: 0;
+    overflow: auto;
+}
+
+.volumeInfo {
+    top: 0;
+    height: 10em;
 }
 
 .folder > span {
     display: inline-block;
+    width: 100%;
 }
 
 .folder > span > svg {

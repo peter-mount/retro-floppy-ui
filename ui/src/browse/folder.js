@@ -56,6 +56,8 @@ class Folder extends Component {
   render() {
     const t = this, p = t.props, s = t.state;
 
+    console.log("folder path", p.path)
+
     if (s.open && !s.file) {
       t.refresh()
     }
