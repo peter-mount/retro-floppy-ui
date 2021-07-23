@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"path"
+	"strings"
 	"time"
 )
 
@@ -82,7 +83,9 @@ func (a *Api) listFiles(r *rest.Rest) error {
 		}
 
 		for _, f := range files {
-			fe.Files = append(fe.Files, getFileEntry(p, f))
+			if !strings.HasSuffix(strings.ToLower(f.Name()), ".cfg") {
+				fe.Files = append(fe.Files, getFileEntry(p, f))
+			}
 		}
 	}
 
