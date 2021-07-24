@@ -37,6 +37,14 @@ body {
     flex-direction: column;
 }
 
+.window .windowTitle {
+    background: #aaaaaa;
+}
+
+.window:hover .windowTitle {
+    background: #5c799c;
+}
+
 .window,
 .raised {
     border-left: 1px solid white;
@@ -54,7 +62,6 @@ body {
 }
 
 .windowTitle {
-    background: #5c799c;
     font-weight: bold;
     color: black;
     text-align: left;

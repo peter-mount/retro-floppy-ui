@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
 
-import '../../css/workbench.css';
-
 class Workbench extends Component {
 
   constructor(props) {
@@ -10,7 +8,7 @@ class Workbench extends Component {
 
   render() {
     const t = this, p = t.props;
-    return (<div className="workbench">{p.children}</div>);
+    return (<div className="workBench">{p.children}</div>);
   }
 
 }
