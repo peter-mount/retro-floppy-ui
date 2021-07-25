@@ -26,7 +26,7 @@ class Window extends Component {
           <div className="windowBody1">{p.children}</div>
           <div className="vertScroll"></div>
           <div className="horizScroll"></div>
-          <ResizeGadget className="resizeGadget"/>
+          <ResizeGadget className="resizeGadget" onMouseDown={e => t.resizeStart(e)}/>
         </div>
         : <div className="windowBody">{p.children}</div>
 
@@ -44,9 +44,15 @@ class Window extends Component {
     // Extends title text to fill remaining width
     styles.width = "calc(100% - " + ((titles.length - 1) * 2) + "em" + (p.close ? " + 3px" : "") + ")"
 
+    let winstyles = {left: s.x, top: s.y}
+    if (s.w && s.h) {
+      winstyles.width = s.w
+      winstyles.height = s.h
+    }
+
     return (
       <div className={"window " + p.className}
-           style={{left: s.x, top: s.y}}
+           style={winstyles}
            draggable={s.drag}
            onDrag={e => t.drag(e, true)}
            onDragEnd={e => t.drag(e, false)}
@@ -61,21 +67,45 @@ class Window extends Component {
     const t = this, s = t.state;
     this.setState(Object.assign({}, s, {
       drag: true,
+      resize: false,
       dx: s.x - e.clientX,
       dy: s.y - e.clientY
+    }))
+  }
+
+  resizeStart(e) {
+    const t = this, s = t.state, window = e.currentTarget.parentNode.parentNode;
+    console.log(Object.assign({}, e))
+    this.setState(Object.assign({}, s, {
+      drag: true,
+      resize: true,
+      dx: s.x - e.clientX,
+      dy: s.y - e.clientY,
+      w: window.clientWidth,
+      h: window.clientHeight
     }))
   }
 
   drag(e, drag) {
     if (e.clientX && e.clientY) {
       const t = this, s = t.state;
-      this.setState(Object.assign({}, s, {
-        x: Math.max(e.clientX + s.dx, 0),
-        y: Math.max(e.clientY + s.dy, 0),
-        drag: drag,
-      }))
+      if (s.resize) {
+        this.setState(Object.assign({}, s, {
+          w: Math.max(e.clientX + s.dx, 50) - s.x,
+          y: Math.max(e.clientY + s.dy, 50) - s.y,
+          drag: drag,
+          resize: true
+        }))
+      } else {
+        this.setState(Object.assign({}, s, {
+          x: Math.max(e.clientX + s.dx, 0),
+          y: Math.max(e.clientY + s.dy, 0),
+          drag: drag,
+        }))
+      }
     }
   }
+
 }
 
 export default Window;
