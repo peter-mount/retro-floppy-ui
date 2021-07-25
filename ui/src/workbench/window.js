@@ -1,5 +1,8 @@
 import React, {Component} from 'react';
 
+import CloseGadget from "../../src/workbench/closeGadget.svg";
+import DepthGadget from "../../src/workbench/depthGadget.svg";
+
 class Window extends Component {
 
   constructor(props) {
@@ -12,7 +15,26 @@ class Window extends Component {
   }
 
   render() {
-    const t = this, p = t.props, s = t.state;
+    const t = this,
+      p = t.props,
+      s = t.state,
+      styles = {},
+      titles = [];
+
+    if (p.close) {
+      titles.push(<CloseGadget className="closeGadget"/>)
+      styles["margin-left"] = "calc(2em - 3px)"
+    }
+
+    titles.push(<span style={styles}>{p.title}</span>)
+
+    if (p.depth == null || p.depth) {
+      titles.push(<DepthGadget className="depthGadget"/>)
+    }
+
+    // Extends title text to fill remaining width
+    styles.width = "calc(100% - " + ((titles.length - 1) * 2) + "em" + (p.close ? " + 3px" : "") + ")"
+
     return (
       <div className={"window " + p.className}
            style={{left: s.x, top: s.y}}
@@ -20,7 +42,7 @@ class Window extends Component {
            onDrag={e => t.drag(e, true)}
            onDragEnd={e => t.drag(e, false)}
       >
-        <div className="windowTitle" onMouseDown={e => t.dragStart(e)}>{p.title}</div>
+        <div className="windowTitle" onMouseDown={e => t.dragStart(e)}>{titles}</div>
         <div className="windowBody">{p.children}</div>
       </div>
     );

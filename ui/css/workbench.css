@@ -17,7 +17,6 @@ body {
     background: white;
     color: black;
     text-align: left;
-    padding: 2px 2px 2px 2px;
     height: 1.5em;
 }
 
@@ -45,6 +44,50 @@ body {
     background: #5c799c;
 }
 
+.windowTitle > span:not(:first-child),
+.windowTitle > svg:not(:first-child) {
+    border-left: 1px solid white
+}
+
+.windowTitle > span:not(:last-child),
+.windowTitle > svg:not(:last-child) {
+    border-right: 1px solid black
+}
+
+.workbenchTitle > svg,
+.windowTitle > svg {
+    height: inherit;
+    width: 2em;
+    display: inline-block;
+}
+
+.workbenchTitle > span {
+    width: calc(100% - 2em);
+    overflow: hidden;
+}
+
+.workbenchTitle > svg {
+    background: #aaaaaa;
+    height: 1.39em;
+}
+
+.workbenchTitle > span,
+.windowTitle > span {
+    display: inline-block;
+    padding-left: .5em;
+}
+
+.windowTitle .closeGadget {
+    position: absolute;
+    left: -1px;
+}
+
+.workbenchTitle .depthGadget,
+.windowTitle .depthGadget {
+    float: right;
+}
+
+button,
 .window,
 .raised {
     border-left: 1px solid white;
@@ -74,4 +117,10 @@ body {
     background: #aaaaaa;
     overflow: auto;
     flex-grow: 1;
+}
+
+button {
+    background: transparent;
+    height: inherit;
+    padding: 0;
 }

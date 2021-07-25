@@ -8,7 +8,7 @@ class Workbench extends Component {
 
   render() {
     const t = this, p = t.props;
-    return (<div className="workBench">{p.children}</div>);
+    return (<div className="workbench">{p.children}</div>);
   }
 
 }

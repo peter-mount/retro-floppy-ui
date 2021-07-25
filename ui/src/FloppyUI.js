@@ -7,7 +7,7 @@ import '../css/floppyui.css';
 // The loaders for each route
 import BrowseLoader from "./loaders/BrowseLoader";
 import Workbench from "./workbench/workbench";
-import WorkbenchStatus from "./workbench/workbenchStatus";
+import WorkbenchTitle from "./workbench/workbenchTitle";
 import WorkbenchBody from "./workbench/workbenchBody";
 
 class FloppyUI extends Component {
@@ -42,7 +42,7 @@ class FloppyUI extends Component {
 
     return (
       <Workbench>
-        <WorkbenchStatus>{status}</WorkbenchStatus>
+        <WorkbenchTitle>{status}</WorkbenchTitle>
         <WorkbenchBody>{windows}</WorkbenchBody>
       </Workbench>
     )
