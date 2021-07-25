@@ -1,6 +1,5 @@
 <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="server" class="svg-inline--fa fa-server fa-w-16 "
      role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-    <path stroke="red" fill="none" d="M1 1 L512 0 L512 512 L0 512 L0 0"/>
     <path fill="black" d="M50 110 l300 0 l0 200 l-300 0"/>
     <path fill="#aaaaaa" d="M70 130 l260 0 l0 160 l-260 0"/>
     <path fill="black" d="M162 202 l300 0 l0 200 l-300 0"/>

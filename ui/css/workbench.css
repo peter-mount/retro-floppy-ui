@@ -40,6 +40,7 @@ body {
     background: #aaaaaa;
 }
 
+.window:hover .windowBody2,
 .window:hover .windowTitle {
     background: #5c799c;
 }
@@ -97,6 +98,7 @@ button,
 }
 
 .windowBody,
+.windowBody1,
 .sunken {
     border-left: 1px solid black;
     border-top: 1px solid black;
@@ -113,10 +115,55 @@ button,
     height: 1.5em;
 }
 
+.windowBody1,
+.windowBody2,
 .windowBody {
     background: #aaaaaa;
+}
+
+.windowBody2,
+.windowBody {
     overflow: auto;
     flex-grow: 1;
+}
+
+.windowBody1 {
+    position: absolute;
+    left: 0.25em;
+    top: 1.5em;
+    right: 1em;
+    bottom: 1em;
+}
+
+.windowBody2 {
+    border-top: 1px solid black;
+}
+
+.windowBody2 .horizScroll {
+    position: absolute;
+    right: 1em;
+    left: 0;
+    bottom: 0;
+    height: 1em;
+}
+
+.windowBody2 .vertScroll {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 1em;
+    width: 1em;
+}
+
+.windowBody2 .resizeGadget {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: calc(1em + 1px);
+    height: calc(1em + 1px);
+    border-left: 1px solid white;
+    border-top: 1px solid white;
+    padding: 1px;
 }
 
 button {

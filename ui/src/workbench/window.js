@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 
 import CloseGadget from "../../src/workbench/closeGadget.svg";
 import DepthGadget from "../../src/workbench/depthGadget.svg";
+import ResizeGadget from "../../src/workbench/resizeGadget.svg";
 
 class Window extends Component {
 
@@ -19,7 +20,15 @@ class Window extends Component {
       p = t.props,
       s = t.state,
       styles = {},
-      titles = [];
+      titles = [],
+      body = p.resizable ?
+        <div className="windowBody2">
+          <div className="windowBody1">{p.children}</div>
+          <div className="vertScroll"></div>
+          <div className="horizScroll"></div>
+          <ResizeGadget className="resizeGadget"/>
+        </div>
+        : <div className="windowBody">{p.children}</div>
 
     if (p.close) {
       titles.push(<CloseGadget className="closeGadget"/>)
@@ -43,7 +52,7 @@ class Window extends Component {
            onDragEnd={e => t.drag(e, false)}
       >
         <div className="windowTitle" onMouseDown={e => t.dragStart(e)}>{titles}</div>
-        <div className="windowBody">{p.children}</div>
+        {body}
       </div>
     );
   }
