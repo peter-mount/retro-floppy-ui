@@ -50,7 +50,7 @@ class Volumes extends Component {
     }
 
     return (
-      <Window className="volumes" title="File Explorer">
+      <Window className="volumes" title="File Explorer" x={50} y={50}>
         <div className="folder">
           <span>
             <FontAwesomeIcon icon={faServer}/>
