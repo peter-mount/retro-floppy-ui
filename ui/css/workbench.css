@@ -28,8 +28,6 @@ body {
 .window {
     position: relative;
     background: #aaaaaa;
-    min-height: 20em;
-    min-width: 20em;
     height: 20em;
     width: 20em;
     display: flex;
@@ -133,6 +131,7 @@ button,
     top: 1.5em;
     right: 1em;
     bottom: 1em;
+    overflow: auto;
 }
 
 .windowBody2 {
