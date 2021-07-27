@@ -88,7 +88,7 @@ body {
 
 button,
 .window,
-div.wbIcon > div:first-child,
+div.wbIcon > div:first-child > svg,
 .raised {
     border-left: 1px solid white;
     border-top: 1px solid white;
@@ -178,8 +178,8 @@ button {
 
 div.wbIcon {
     float: left;
-    width: 5em;
-    height: 5em;
+    min-width: 5em;
+    min-height: 5em;
     z-index: 100;
     margin: .5em;
 }
@@ -195,7 +195,7 @@ div.wbIcon > div:last-child {
 }
 
 .wbIcon > div > svg {
-    width: 8em !important;
+    width: 5em !important;
     height: 3em !important;
     padding: .25em;
     display: block;
