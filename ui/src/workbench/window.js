@@ -11,8 +11,8 @@ class Window extends Component {
     this.state = {
       x: props.x ? props.x : 0,
       y: props.y ? props.y : 0,
-      w: 200,
-      h: 200,
+      w: props.w ? props.w : 200,
+      h: props.h ? props.h : 200,
       drag: false,
     }
   }

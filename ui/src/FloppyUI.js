@@ -11,12 +11,20 @@ import Workbench from "./workbench/workbench";
 import WorkbenchTitle from "./workbench/workbenchTitle";
 import WorkbenchBody from "./workbench/workbenchBody";
 import Icon from "./workbench/icon";
+import Folder from "./volume/folder";
+
+const TypeFolder = 1,
+  TypeDisk = 2;
 
 class FloppyUI extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {}
+    this.state = {
+      icons: {},
+      windows: [],
+      wid: 0, // WindowId sequence
+    }
   }
 
   componentDidMount() {
@@ -28,37 +36,94 @@ class FloppyUI extends Component {
 
     fetch("/api/status")
       .then(res => res.json())
-      .then(f => t.setState(Object.assign({}, s, {status: f})))
+      .then(f => t.updateStatus(f))
       .catch(e => {
         console.error("status", e)
       })
   }
 
+  updateStatus(f) {
+    const icons = {}
+    Object.keys(f.disk)
+      .forEach((d, s) => {
+        icons['icon:' + d] = {
+          key: d,
+          name: d,
+          icon: amDisk,
+          path: d + "/"
+        }
+      })
+
+    this.setState(Object.assign({}, this.state, {
+      status: f,
+      icons: icons,
+    }))
+  }
+
+  touchState() {
+    this.setState(Object.assign({}, this.state, {update: new Date()}))
+  }
+
   render() {
     const t = this,
       s = t.state,
-      status = s ? s.status : null,
+      status = s.status,
       title = status ? status.host.hostname + " - " + status.host.computer : "";
 
     console.log("fui.state", s)
 
-    let windows = [], icons = [];
+    let children = [];
 
-    if (status) {
-      Object.keys(status.disk)
-        .forEach((d, s) => {
-          icons.push(<Icon key={'icon:' + d} name={d} icon={amDisk}/>)
-        })
-    }
+    Object.keys(s.icons)
+      .sort((a, b) => a.name.localeCompare(b.name))
+      .forEach((k) => {
+        const i = s.icons[k]
+        children.push(<Icon key={k} name={i.name} icon={i.icon} onDoubleClick={e => t.openFolder(i, e)}/>)
+      })
+
+    s.windows
+      .map(w => {
+        switch (w.type) {
+          case TypeFolder:
+            return <Folder path={w.path} title={w.title} x={w.x} y={w.x} w={w.w} h={w.h} wb={t}/>
+        }
+      })
+      .forEach(w => children.push(w))
 
     //windows.push(<BrowseLoader key={'browser'}/>)
 
     return (
       <Workbench>
         <WorkbenchTitle>{title}</WorkbenchTitle>
-        <WorkbenchBody>{icons}{windows}</WorkbenchBody>
+        <WorkbenchBody>{children}</WorkbenchBody>
       </Workbench>
     )
+  }
+
+  openFolder(icon, e) {
+    console.log("Open folder", icon)
+    if (icon.window) {
+      // TODO bring window to front?
+    } else {
+      const t = this, s = t.state, w = this.state.windows, key = "window:" + icon.path;
+      icon.window = key;
+      w.push({
+        id: s.wid, // Window ID
+        key: key,
+        x: 100, y: 100, // TODO allocate a new location not at same place
+        w: 300, h: 200,
+        title: icon.name,
+        path: icon.path,
+        type: TypeFolder,
+      })
+
+      this.setState(Object.assign({}, s, {
+        windows: w,
+        wid: s.wid + 1
+      }))
+
+      this.touchState()
+    }
   }
 
 }

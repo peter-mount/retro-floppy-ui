@@ -88,6 +88,7 @@ body {
 
 button,
 .window,
+div.wbIcon > div:first-child,
 .raised {
     border-left: 1px solid white;
     border-top: 1px solid white;

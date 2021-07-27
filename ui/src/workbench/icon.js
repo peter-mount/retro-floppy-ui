@@ -11,10 +11,28 @@ class Icon extends Component {
 
   render() {
     const t = this, p = t.props;
-    return (<div className="wbIcon">
-      <div><p.icon/></div>
+    return (<div className="wbIcon"
+                 onClick={e => t.onClick()}
+                 onDoubleClick={e => t.onDoubleClick()}>
+      <div>
+        <p.icon/>
+      </div>
       <div>{p.name}</div>
     </div>);
+  }
+
+  onClick(e) {
+    const t = this, p = t.props;
+    if (p.onClick) {
+      p.onClick(e)
+    }
+  }
+
+  onDoubleClick(e) {
+    const t = this, p = t.props;
+    if (p.onDoubleClick) {
+      p.onDoubleClick(e)
+    }
   }
 
 }
