@@ -26,7 +26,7 @@ body {
 }
 
 .window {
-    position: relative;
+    position: absolute;
     background: #aaaaaa;
     height: 20em;
     width: 20em;

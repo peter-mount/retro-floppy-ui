@@ -82,12 +82,20 @@ class FloppyUI extends Component {
       })
 
     s.windows
-      .map(w => {
+      .map((w, z) => {
         switch (w.type) {
           case TypeFolder:
-            return <Folder path={w.path} title={w.title} x={w.x} y={w.x} w={w.w} h={w.h} wb={t}/>
+            return <Folder id={w.id}
+                           path={w.path}
+                           title={w.title}
+                           x={w.x} y={w.x} w={w.w} h={w.h}
+                           z={z + 1}
+                           wb={t}/>
+          default:
+            return null
         }
       })
+      .filter(w => w != null)
       .forEach(w => children.push(w))
 
     //windows.push(<BrowseLoader key={'browser'}/>)
@@ -101,29 +109,48 @@ class FloppyUI extends Component {
   }
 
   openFolder(icon, e) {
+    const t = this, s = t.state, w = s.windows, key = "window:" + icon.path;
+
     console.log("Open folder", icon)
     if (icon.window) {
-      // TODO bring window to front?
-    } else {
-      const t = this, s = t.state, w = this.state.windows, key = "window:" + icon.path;
-      icon.window = key;
-      w.push({
-        id: s.wid, // Window ID
-        key: key,
-        x: 100, y: 100, // TODO allocate a new location not at same place
-        w: 300, h: 200,
-        title: icon.name,
-        path: icon.path,
-        type: TypeFolder,
-      })
-
-      this.setState(Object.assign({}, s, {
-        windows: w,
-        wid: s.wid + 1
-      }))
-
-      this.touchState()
+      // If window still exists then pull to front
+      // If not then ignore & open a new one
+      const w1 = w.filter(w2 => w2 === icon.window).reduce((p, c) => c, null)
+      if (w1) {
+        // TODO bring window to front?
+        return
+      }
     }
+
+    icon.window = key;
+    w.push({
+      id: s.wid, // Window ID
+      key: key,
+      x: 100, y: 100, // TODO allocate a new location not at same place
+      w: 300, h: 200,
+      title: icon.name,
+      path: icon.path,
+      type: TypeFolder,
+    })
+
+    s.wid = s.wid + 1
+    t.setState(Object.assign({}, s, {
+      windows: w,
+    }))
+
+    this.touchState()
+  }
+
+  closeWindow(id) {
+    const t = this, s = t.state;
+    t.setState(Object.assign({}, s, {
+      windows: s.windows
+        .filter(w => w.id !== id)
+        .reduce((p, c) => {
+          p.push(c)
+          return p
+        }, [])
+    }))
   }
 
 }

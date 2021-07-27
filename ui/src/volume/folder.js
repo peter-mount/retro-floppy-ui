@@ -61,11 +61,21 @@ class Folder extends Component {
     }
 
     return (
-      <Window title={p.title} x={p.x ? p.x : 100} y={p.y ? p.y : 100} w={p.w} h={p.h} resizable={true}>
+      <Window title={p.title}
+              x={p.x ? p.x : 100} y={p.y ? p.y : 100} w={p.w} h={p.h}
+              z={p.z}
+              resizable={true}
+              close={e => t.closeFolder(e)}>
         <div className="folder">{children}</div>
       </Window>);
   }
 
+  closeFolder(e) {
+    const t = this, p = t.props;
+    if (p.wb) {
+      p.wb.closeWindow(p.id)
+    }
+  }
 }
 
 export default Folder;

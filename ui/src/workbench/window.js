@@ -37,7 +37,7 @@ class Window extends Component {
         : <div className="windowBody">{p.children}</div>
 
     if (p.close) {
-      titles.push(<CloseGadget className="closeGadget"/>)
+      titles.push(<CloseGadget className="closeGadget" onClick={e => p.close(e)}/>)
       styles["margin-left"] = "calc(2em - 3px)"
     }
 
@@ -55,9 +55,12 @@ class Window extends Component {
       winStyles.width = s.w
       winStyles.height = s.h
     }
+    if (p.z) {
+      winStyles.zIndex = 1000 * p.z
+    }
 
     return (
-      <div className={"window " + p.className}
+      <div className={"window " + (p.className ? p.className : "")}
            style={winStyles}
            draggable={s.drag}
            onDrag={e => t.drag(e, true)}
@@ -113,6 +116,7 @@ class Window extends Component {
       }))
     }
   }
+
 }
 
 const getWindow = (e) => {
