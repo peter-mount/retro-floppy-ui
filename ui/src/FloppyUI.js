@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-
+import {faServer} from '@fortawesome/free-solid-svg-icons';
+import {amDisk} from '../src/workbench/disk.svg';
 import '../css/App.css';
 import '../css/materialicons.css';
 import '../css/floppyui.css';
@@ -9,12 +10,13 @@ import BrowseLoader from "./loaders/BrowseLoader";
 import Workbench from "./workbench/workbench";
 import WorkbenchTitle from "./workbench/workbenchTitle";
 import WorkbenchBody from "./workbench/workbenchBody";
+import Icon from "./workbench/icon";
 
 class FloppyUI extends Component {
 
   constructor(props) {
     super(props);
-    this.state = null
+    this.state = {}
   }
 
   componentDidMount() {
@@ -22,10 +24,11 @@ class FloppyUI extends Component {
   }
 
   refresh() {
-    const t = this;
+    const t = this, s = t.state;
+
     fetch("/api/status")
       .then(res => res.json())
-      .then(f => t.setState(f))
+      .then(f => t.setState(Object.assign({}, s, {status: f})))
       .catch(e => {
         console.error("status", e)
       })
@@ -34,16 +37,26 @@ class FloppyUI extends Component {
   render() {
     const t = this,
       s = t.state,
-      status = s ? s.host.hostname + " - " + s.host.computer : "";
+      status = s ? s.status : null,
+      title = status ? status.host.hostname + " - " + status.host.computer : "";
 
-    let windows = []
+    console.log("fui.state", s)
 
-    windows.push(<BrowseLoader/>)
+    let windows = [], icons = [];
+
+    if (status) {
+      Object.keys(status.disk)
+        .forEach((d, s) => {
+          icons.push(<Icon key={'icon:' + d} name={d} icon={amDisk}/>)
+        })
+    }
+
+    //windows.push(<BrowseLoader key={'browser'}/>)
 
     return (
       <Workbench>
-        <WorkbenchTitle>{status}</WorkbenchTitle>
-        <WorkbenchBody>{windows}</WorkbenchBody>
+        <WorkbenchTitle>{title}</WorkbenchTitle>
+        <WorkbenchBody>{icons}{windows}</WorkbenchBody>
       </Workbench>
     )
   }

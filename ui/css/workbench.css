@@ -170,3 +170,32 @@ button {
     height: inherit;
     padding: 0;
 }
+
+.wbIcon {
+    display: inline-block;
+}
+
+div.wbIcon {
+    float: left;
+    width: 5em;
+    height: 5em;
+    z-index: 100;
+    margin: .5em;
+}
+
+div.wbIcon > div:first-child {
+    display: flex;
+    justify-content: center;
+}
+
+div.wbIcon > div:last-child {
+    text-align: center;
+    font-weight: bold;
+}
+
+.wbIcon > div > svg {
+    width: 8em !important;
+    height: 3em !important;
+    padding: .25em;
+    display: block;
+}

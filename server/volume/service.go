@@ -67,9 +67,9 @@ func (v *VolumeManager) Start() error {
 		return err
 	}
 
-	if len(v.volumes) == 0 {
+	/*if len(v.volumes) == 0 {
 		go v.createInitialVolume()
-	}
+	}*/
 
 	return nil
 }
