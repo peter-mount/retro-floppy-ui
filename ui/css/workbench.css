@@ -89,6 +89,7 @@ body {
 button,
 .window,
 div.wbIcon > div:first-child > svg,
+.scrollSlider,
 .raised {
     border-left: 1px solid white;
     border-top: 1px solid white;
@@ -98,6 +99,7 @@ div.wbIcon > div:first-child > svg,
 
 .windowBody,
 .windowBody1,
+.scrollSlider:hover:active,
 .sunken {
     border-left: 1px solid black;
     border-top: 1px solid black;
@@ -153,6 +155,16 @@ div.wbIcon > div:first-child > svg,
     top: 1.5em;
     bottom: 1em;
     width: 1em;
+}
+
+.horizScroll .scrollSlider,
+.vertScroll .scrollSlider {
+    position: absolute;
+    left: .125em;
+    top: .125em;
+    right: .125em;
+    bottom: .125em;
+    background: antiquewhite;
 }
 
 .windowBody2 .resizeGadget {

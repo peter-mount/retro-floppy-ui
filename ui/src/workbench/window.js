@@ -1,13 +1,15 @@
-import React, {Component} from 'react';
+import React, {Component, createRef} from 'react';
 
 import CloseGadget from "../../src/workbench/closeGadget.svg";
 import DepthGadget from "../../src/workbench/depthGadget.svg";
 import ResizeGadget from "../../src/workbench/resizeGadget.svg";
+import ScrollBar from "./scrollBar";
 
 class Window extends Component {
 
   constructor(props) {
     super(props);
+    this.bodyRef = createRef()
     this.state = {
       x: props.x ? props.x : 0,
       y: props.y ? props.y : 0,
@@ -17,6 +19,9 @@ class Window extends Component {
     }
   }
 
+  scroll(e) {
+    console.log("scroll",Object.assign({},e))
+  }
   render() {
     const t = this,
       p = t.props,
@@ -25,9 +30,9 @@ class Window extends Component {
       titles = [],
       body = p.resizable ?
         <div className="windowBody2">
-          <div className="windowBody1">{p.children}</div>
-          <div className="vertScroll"></div>
-          <div className="horizScroll"></div>
+          <div className="windowBody1" ref={t.bodyRef} onScroll={e=>t.scroll(e)}>{p.children}</div>
+          <ScrollBar vertical={true} body={t.bodyRef}/>
+          <ScrollBar vertical={false} body={t.bodyRef}/>
           <ResizeGadget className="resizeGadget"
                         onMouseDown={e => t.resizeStart(e)}
                         onMouseMove={e => t.resize(e)}
@@ -36,6 +41,7 @@ class Window extends Component {
         </div>
         : <div className="windowBody">{p.children}</div>
 
+    console.log("ref", t.bodyRef.current)
     if (p.close) {
       titles.push(<CloseGadget className="closeGadget" onClick={e => p.close(e)}/>)
       styles["margin-left"] = "calc(2em - 3px)"
