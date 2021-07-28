@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
-import {faServer} from '@fortawesome/free-solid-svg-icons';
+//import {faServer} from '@fortawesome/free-solid-svg-icons';
 import {amDisk} from '../src/workbench/disk.svg';
 import '../css/App.css';
 import '../css/materialicons.css';
 import '../css/floppyui.css';
 
 // The loaders for each route
-import BrowseLoader from "./loaders/BrowseLoader";
+//import BrowseLoader from "./loaders/BrowseLoader";
 import Workbench from "./workbench/workbench";
 import WorkbenchTitle from "./workbench/workbenchTitle";
 import WorkbenchBody from "./workbench/workbenchBody";
@@ -70,8 +70,6 @@ class FloppyUI extends Component {
       status = s.status,
       title = status ? status.host.hostname + " - " + status.host.computer : "";
 
-    console.log("fui.state", s)
-
     let children = [];
 
     Object.keys(s.icons)
@@ -112,7 +110,6 @@ class FloppyUI extends Component {
   openFolder(icon, e) {
     const t = this, s = t.state, w = s.windows, key = "window:" + icon.path;
 
-    console.log("Open folder", icon)
     if (icon.window) {
       // If window still exists then pull to front
       // If not then ignore & open a new one
@@ -156,7 +153,6 @@ class FloppyUI extends Component {
 
   // Close window by removing from list
   closeWindow(id) {
-    console.log("closeWindow", id)
     const t = this, s = t.state;
     t.setState(Object.assign({}, s, {
       windows: t.getWindowsExcept(id)
@@ -165,7 +161,6 @@ class FloppyUI extends Component {
 
   // Bring window forward
   windowToFront(id) {
-    console.log("windowToFront", id)
     const t = this, s = t.state, wa = s.windows;
 
     // Do nothing if we are already on top
@@ -181,7 +176,6 @@ class FloppyUI extends Component {
 
   // Send window to back
   windowToBack(id) {
-    console.log("windowToBack", id)
     const t = this, s = t.state, wa = s.windows;
 
     // Do nothing if we are already on bottom

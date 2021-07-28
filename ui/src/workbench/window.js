@@ -20,7 +20,8 @@ class Window extends Component {
   }
 
   scroll(e) {
-    //console.log("scroll",Object.assign({},e))
+    // This triggers an update when the window content is scrolled so the
+    // scroll bars get updated
     this.setState(Object.assign({}, this.state, {scroll: new Date()}))
   }
 
@@ -43,7 +44,6 @@ class Window extends Component {
         </div>
         : <div className="windowBody">{p.children}</div>
 
-    console.log("ref", t.bodyRef.current)
     if (p.close) {
       titles.push(<CloseGadget className="closeGadget" onClick={e => p.close(e)}/>)
       styles["margin-left"] = "calc(2em - 3px)"
