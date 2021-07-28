@@ -48,9 +48,17 @@ body {
     border-left: 1px solid white
 }
 
+.windowTitle > svg:not(:first-child):hover:active {
+    border-left: 1px solid black
+}
+
 .windowTitle > span:not(:last-child),
 .windowTitle > svg:not(:last-child) {
     border-right: 1px solid black
+}
+
+.windowTitle > svg:not(:last-child):hover:active {
+    border-right: 1px solid white
 }
 
 .workbenchTitle > svg,
@@ -99,6 +107,7 @@ div.wbIcon > div:first-child > svg,
 
 .windowBody,
 .windowBody1,
+div.wbIcon > div:first-child > svg:hover:active,
 .scrollSlider:hover:active,
 .sunken {
     border-left: 1px solid black;
