@@ -43,9 +43,8 @@ class Window extends Component {
 
     titles.push(<span style={styles}>{p.title}</span>)
 
-    if (p.depth == null || p.depth) {
-      titles.push(<DepthGadget className="depthGadget"/>)
-    }
+    // For now depthGadget is mandatory
+    titles.push(<DepthGadget className="depthGadget" onClickCapture={e => t.windowToBack(e)}/>)
 
     // Extends title text to fill remaining width
     styles.width = "calc(100% - " + ((titles.length - 1) * 2) + "em" + (p.close ? " + 3px" : "") + ")"
@@ -65,6 +64,7 @@ class Window extends Component {
            draggable={s.drag}
            onDrag={e => t.drag(e, true)}
            onDragEnd={e => t.drag(e, false)}
+           onClickCapture={e => t.windowToFront(e)}
       >
         <div className="windowTitle" onMouseDown={e => t.dragStart(e)}>{titles}</div>
         {body}
@@ -117,6 +117,17 @@ class Window extends Component {
     }
   }
 
+  windowToFront(e) {
+    if (this.props.windowToFront) {
+      this.props.windowToFront(e)
+    }
+  }
+
+  windowToBack(e) {
+    if (this.props.windowToBack) {
+      this.props.windowToBack(e)
+    }
+  }
 }
 
 const getWindow = (e) => {

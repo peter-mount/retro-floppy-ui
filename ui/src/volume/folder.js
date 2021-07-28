@@ -65,7 +65,9 @@ class Folder extends Component {
               x={p.x ? p.x : 100} y={p.y ? p.y : 100} w={p.w} h={p.h}
               z={p.z}
               resizable={true}
-              close={e => t.closeFolder(e)}>
+              close={e => t.closeFolder(e)}
+              windowToFront={e => t.windowToFront(e)}
+              windowToBack={e => t.windowToBack(e)}>
         <div className="folder">{children}</div>
       </Window>);
   }
@@ -75,6 +77,23 @@ class Folder extends Component {
     if (p.wb) {
       p.wb.closeWindow(p.id)
     }
+    e.stopPropagation();
+  }
+
+  windowToFront(e) {
+    const t = this, p = t.props;
+    if (p.wb) {
+      p.wb.windowToFront(p.id)
+    }
+    //e.stopPropagation();
+  }
+
+  windowToBack(e) {
+    const t = this, p = t.props;
+    if (p.wb) {
+      p.wb.windowToBack(p.id)
+    }
+    e.stopPropagation();
   }
 }
 

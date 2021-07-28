@@ -150,7 +150,7 @@ div.wbIcon > div:first-child > svg,
 .windowBody2 .vertScroll {
     position: absolute;
     right: 0;
-    top: 0;
+    top: 1.5em;
     bottom: 1em;
     width: 1em;
 }

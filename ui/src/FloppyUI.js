@@ -85,7 +85,8 @@ class FloppyUI extends Component {
       .map((w, z) => {
         switch (w.type) {
           case TypeFolder:
-            return <Folder id={w.id}
+            return <Folder key={w.id}
+                           id={w.id}
                            path={w.path}
                            title={w.title}
                            x={w.x} y={w.x} w={w.w} h={w.h}
@@ -141,18 +142,43 @@ class FloppyUI extends Component {
     this.touchState()
   }
 
+  // Remove id from array.
+  // a defaults to [] but is initial array to append existing windows to
+  getWindowsExcept(id, a = []) {
+    return this.state.windows
+      .filter(w => w.id !== id)
+      .reduce((p, c) => {
+        p.push(c)
+        return p
+      }, a)
+  }
+
+  // Close window by removing from list
   closeWindow(id) {
+    console.log("closeWindow",id)
     const t = this, s = t.state;
     t.setState(Object.assign({}, s, {
-      windows: s.windows
-        .filter(w => w.id !== id)
-        .reduce((p, c) => {
-          p.push(c)
-          return p
-        }, [])
+      windows: t.getWindowsExcept(id)
     }))
   }
 
+  // Bring window forward
+  windowToFront(id) {
+    console.log("windowToFront",id)
+    const t = this, s = t.state,
+      w = s.windows.filter(w => w.id === id).reduce((p, c) => c, null),
+      a = t.getWindowsExcept(id)
+    a.push(w);
+    t.setState(Object.assign({}, s, {windows: a}))
+  }
+
+  // Send window to back
+  windowToBack(id) {
+    console.log("windowToBack",id)
+    const t = this, s = t.state,
+      w = s.windows.filter(w => w.id === id).reduce((p, c) => c, null)
+    t.setState(Object.assign({}, s, {windows: t.getWindowsExcept(id, [w])}))
+  }
 }
 
 export default FloppyUI;
