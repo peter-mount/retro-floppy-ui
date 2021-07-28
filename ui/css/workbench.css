@@ -34,12 +34,16 @@ body {
     flex-direction: column;
 }
 
-.window .windowTitle {
+.window .windowTitle,
+.window .horizScroll .scrollSlider > div,
+.window .vertScroll .scrollSlider > div {
     background: #aaaaaa;
 }
 
 .window:hover .windowBody2,
-.window:hover .windowTitle {
+.window:hover .windowTitle,
+.window:hover .horizScroll .scrollSlider > div,
+.window:hover .vertScroll .scrollSlider > div {
     background: #5c799c;
 }
 
@@ -171,9 +175,95 @@ div.wbIcon > div:first-child > svg:hover:active,
     position: absolute;
     left: .125em;
     top: .125em;
-    right: .125em;
-    bottom: .125em;
     background: antiquewhite;
+}
+
+.horizScroll .scrollSlider {
+    right: 2.25em;
+    bottom: .125em;
+}
+
+.vertScroll .scrollSlider {
+    right: .125em;
+    bottom: 2.25em;
+}
+
+.scrollSlider > div.slider {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.vertScroll > .dec,
+.vertScroll > .inc {
+    position: absolute;
+    left: 0;
+    right: 0;
+}
+
+.vertScroll > .dec {
+    bottom: calc(1em + 1px);
+    border-top: 1px solid white;
+    border-bottom: 1px solid black;
+}
+
+.vertScroll > .dec:hover:active {
+    border-top: 1px solid black;
+    border-bottom: 1px solid white;
+}
+
+.vertScroll > .inc {
+    bottom: 1px;
+    transform: rotate(180deg);
+    /* Note these are rotated */
+    border-top: 1px solid black;
+    border-bottom: 1px solid white;
+}
+
+.vertScroll > .inc:hover:active {
+    border-top: 1px solid white;
+    border-bottom: 1px solid black;
+}
+
+.horizScroll > .dec,
+.horizScroll > .inc {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+}
+
+.horizScroll > svg {
+    height: 1em;
+}
+
+.horizScroll > .dec {
+    right: calc(1em + 1px);
+    transform: rotate(-90deg);
+    /* Note these are rotated */
+    border-top: 1px solid white;
+    border-bottom: 1px solid black;
+}
+
+.horizScroll > .dec:hover:active {
+    /* Note these are rotated */
+    border-top: 1px solid black;
+    border-bottom: 1px solid white;
+}
+
+.horizScroll > .inc {
+    right: 1px;
+    transform: rotate(90deg);
+    /* Note these are rotated */
+    border-top: 1px solid black;
+    border-bottom: 1px solid white;
+}
+
+.horizScroll > .inc:hover:active {
+    /* Note these are rotated */
+    border-top: 1px solid white;
+    border-bottom: 1px solid black;
 }
 
 .windowBody2 .resizeGadget {

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-const SCROLL_BOX_MIN_HEIGHT = 20;
+import ScrollIcon from '../../src/workbench/scroll.svg';
 
 class ScrollBar extends Component {
 
@@ -20,7 +20,11 @@ class ScrollBar extends Component {
     }
     return (
       <div className={s.className} ref={t.scrollHostRef}>
-        <div className="scrollSlider"></div>
+        <div className="scrollSlider">
+          <div className="slider"/>
+        </div>
+        <ScrollIcon className="dec"/>
+        <ScrollIcon className="inc"/>
       </div>)
   }
 }

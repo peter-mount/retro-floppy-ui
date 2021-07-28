@@ -156,7 +156,7 @@ class FloppyUI extends Component {
 
   // Close window by removing from list
   closeWindow(id) {
-    console.log("closeWindow",id)
+    console.log("closeWindow", id)
     const t = this, s = t.state;
     t.setState(Object.assign({}, s, {
       windows: t.getWindowsExcept(id)
@@ -165,9 +165,15 @@ class FloppyUI extends Component {
 
   // Bring window forward
   windowToFront(id) {
-    console.log("windowToFront",id)
-    const t = this, s = t.state,
-      w = s.windows.filter(w => w.id === id).reduce((p, c) => c, null),
+    console.log("windowToFront", id)
+    const t = this, s = t.state, wa = s.windows;
+
+    // Do nothing if we are already on top
+    if (wa.length > 0 && wa[wa.length - 1].id === id) {
+      return
+    }
+
+    const w = wa.filter(w => w.id === id).reduce((p, c) => c, null),
       a = t.getWindowsExcept(id)
     a.push(w);
     t.setState(Object.assign({}, s, {windows: a}))
@@ -175,9 +181,15 @@ class FloppyUI extends Component {
 
   // Send window to back
   windowToBack(id) {
-    console.log("windowToBack",id)
-    const t = this, s = t.state,
-      w = s.windows.filter(w => w.id === id).reduce((p, c) => c, null)
+    console.log("windowToBack", id)
+    const t = this, s = t.state, wa = s.windows;
+
+    // Do nothing if we are already on bottom
+    if (wa.length > 0 && wa[0].id === id) {
+      return
+    }
+
+    const w = wa.filter(w => w.id === id).reduce((p, c) => c, null)
     t.setState(Object.assign({}, s, {windows: t.getWindowsExcept(id, [w])}))
   }
 }
