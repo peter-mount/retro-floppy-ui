@@ -173,9 +173,9 @@ div.wbIcon > div:first-child > svg:hover:active,
 .horizScroll .scrollSlider,
 .vertScroll .scrollSlider {
     position: absolute;
-    left: .125em;
-    top: .125em;
-    background: antiquewhite;
+    left: calc(.125em + 1px);
+    top: calc(.125em + 1px);
+    background: #888888;
 }
 
 .horizScroll .scrollSlider {
@@ -185,7 +185,7 @@ div.wbIcon > div:first-child > svg:hover:active,
 
 .vertScroll .scrollSlider {
     right: .125em;
-    bottom: 2.25em;
+    bottom: 2.5em;
 }
 
 .scrollSlider > div.slider {
@@ -204,7 +204,7 @@ div.wbIcon > div:first-child > svg:hover:active,
 }
 
 .vertScroll > .dec {
-    bottom: calc(1em + 1px);
+    bottom: calc(1em + 3px);
     border-top: 1px solid white;
     border-bottom: 1px solid black;
 }
@@ -239,7 +239,7 @@ div.wbIcon > div:first-child > svg:hover:active,
 }
 
 .horizScroll > .dec {
-    right: calc(1em + 1px);
+    right: calc(1em + 3px);
     transform: rotate(-90deg);
     /* Note these are rotated */
     border-top: 1px solid white;
@@ -253,7 +253,7 @@ div.wbIcon > div:first-child > svg:hover:active,
 }
 
 .horizScroll > .inc {
-    right: 1px;
+    right: 2px;
     transform: rotate(90deg);
     /* Note these are rotated */
     border-top: 1px solid black;

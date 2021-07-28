@@ -20,8 +20,10 @@ class Window extends Component {
   }
 
   scroll(e) {
-    console.log("scroll",Object.assign({},e))
+    //console.log("scroll",Object.assign({},e))
+    this.setState(Object.assign({}, this.state, {scroll: new Date()}))
   }
+
   render() {
     const t = this,
       p = t.props,
@@ -30,7 +32,7 @@ class Window extends Component {
       titles = [],
       body = p.resizable ?
         <div className="windowBody2">
-          <div className="windowBody1" ref={t.bodyRef} onScroll={e=>t.scroll(e)}>{p.children}</div>
+          <div className="windowBody1" ref={t.bodyRef} onScroll={e => t.scroll(e)}>{p.children}</div>
           <ScrollBar vertical={true} body={t.bodyRef}/>
           <ScrollBar vertical={false} body={t.bodyRef}/>
           <ResizeGadget className="resizeGadget"
