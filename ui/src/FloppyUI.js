@@ -23,7 +23,7 @@ class FloppyUI extends Component {
     this.state = {
       icons: {},
       windows: [],
-      wid: 0, // WindowId sequence
+      wid: 1, // initial WindowId sequence
     }
   }
 
@@ -116,14 +116,13 @@ class FloppyUI extends Component {
     if (icon.window) {
       // If window still exists then pull to front
       // If not then ignore & open a new one
-      const w1 = w.filter(w2 => w2 === icon.window).reduce((p, c) => c, null)
+      const w1 = w.filter(w2 => w2.id === icon.window).reduce((p, c) => c, null)
       if (w1) {
-        // TODO bring window to front?
+        t.windowToFront(icon.window)
         return
       }
     }
 
-    icon.window = key;
     w.push({
       id: s.wid, // Window ID
       key: key,
@@ -133,6 +132,8 @@ class FloppyUI extends Component {
       path: icon.path,
       type: TypeFolder,
     })
+
+    icon.window = s.wid;
 
     s.wid = s.wid + 1
     t.setState(Object.assign({}, s, {
