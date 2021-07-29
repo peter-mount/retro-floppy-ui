@@ -10,6 +10,7 @@ import (
 type Api struct {
 	restService *rest.Server          // web server
 	vm          *volume.VolumeManager // Volume manager
+	db          *DB                   // Database
 }
 
 func (a *Api) Name() string {
@@ -36,6 +37,12 @@ func (a *Api) Init(k *kernel.Kernel) error {
 	}
 	a.vm = (service).(*volume.VolumeManager)
 
+	service, err = k.AddService(&DB{})
+	if err != nil {
+		return err
+	}
+	a.db = (service).(*DB)
+
 	return nil
 }
 
@@ -51,6 +58,12 @@ func (a *Api) PostInit() error {
 
 	rest.Handle("/api/list", a.listVolumes).Methods("GET")
 	rest.Handle("/api/list/{volume}/{path:[0-9a-zA-Z/._ -]*}", a.listFiles).Methods("GET")
+
+	// DB access - used for UI persistence
+	path := "/api/data/{bucket}/{key:[0-9a-zA-Z/._ -]*}"
+	rest.Handle(path, a.db.get).Methods("GET")
+	rest.Handle(path, a.db.put).Methods("PUT", "POST")
+	rest.Handle(path, a.db.put).Methods("DELETE")
 
 	return nil
 }
