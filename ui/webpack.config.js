@@ -16,8 +16,8 @@ if( process.env.environment == 'production' ) {
 */
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const BabelMinifyPlugin = require('babel-minify-webpack-plugin');
-//const TerserPlugin = require('terser-webpack-plugin');
+//const BabelMinifyPlugin = require('babel-minify-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 //const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -70,9 +70,9 @@ module.exports = {
     optimization: {
         minimize: true,
         minimizer: [
-            new BabelMinifyPlugin(),
+            ////new BabelMinifyPlugin(),
             //new UglifyJSPlugin(),
-            //new TerserPlugin({}),
+            new TerserPlugin({}),
             new OptimizeCSSAssetsPlugin({})
         ],
 
@@ -124,7 +124,7 @@ module.exports = {
                 test: /\.(js|jsx)$/,
                 exclude: /(node_modules|bower_components)/,
                 include: [
-                    path.resolve(__dirname, './lib')
+                    path.resolve(__dirname, './src')
                 ],
                 loader: 'babel-loader',
                 query: {
