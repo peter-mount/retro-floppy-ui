@@ -17,18 +17,59 @@ import MountedVolumes from "./volume/mountedVolumes";
 
 class FloppyUI extends Component {
 
+  constructor(props) {
+    super(props);
+    this.wshandlers = {};
+    this.state = {};
+  }
+
+  // Register websocket message handler
+  register(o) {
+    const h = this.wshandlers;
+    Object.keys(o).forEach(k => {
+      if (typeof h[k] === "undefined") {
+        h[k] = [o[k]]
+      } else {
+        h[k].push(o)
+      }
+    })
+  }
+
+  // Unregister websocket message handler
+  // r function to remove, o array of id's to check
+  unregister(r) {
+    const h = this.wshandlers;
+    Object.keys(h)
+      .forEach(k => {
+        h[k] = h[k].filter(v => v === r)
+      })
+  }
+
+  handleWS(e) {
+    e.data.split("\n").forEach(l => {
+      let v = JSON.parse(l)
+      console.log("WS", v)
+      let h = this.wshandlers[v.id]
+      if (typeof h !== "undefined") {
+        h.forEach(r => r(v))
+      }
+    })
+  }
+
   componentDidMount() {
     const t = this;
+
     let url = (location.protocol === 'http:' ? 'ws:' : 'wss:') + '//' + document.domain + '/ws'
     console.log("WS connect", url)
     t.socket = new WebSocket(url);
-    t.socket.addEventListener("open", e => {
-      console.log("Open")
-      t.socket.send("hello server!")
-    })
-    t.socket.addEventListener("message", e => {
-      console.log("Received", e.data)
-    })
+    t.socket.addEventListener("message", e => t.handleWS(e))
+    /*
+        t.socket.addEventListener("open", e => {
+          console.log("Open")
+          // TODO for now send a message that the front end has connected. Probably will remove this later.
+          t.socket.send(JSON.stringify({id: "fe"}))
+        })
+    */
   }
 
   render() {
@@ -67,7 +108,7 @@ class FloppyUI extends Component {
         <Container>
           <Row>
             <Col>
-              <MountedVolumes/>
+              <MountedVolumes ws={t}/>
             </Col>
             <Col>2</Col>
             <Col>3</Col>

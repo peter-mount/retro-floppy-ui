@@ -19,8 +19,37 @@ class MountedVolumes extends Component {
   }
 
   componentDidMount() {
-    const t = this, s = t.state;
+    const t = this, p = t.props;
+    t.wshandler = e => t.handleWS(e)
+    p.ws.register({
+      mount: t.wshandler,
+      unmount: t.wshandler,
+    })
     this.refresh()
+  }
+
+  componentWillUnmount() {
+    this.props.ws.unregister(this.wshandler)
+  }
+
+  handleWS(e) {
+    const t = this, s = t.state;
+    switch (e.id) {
+      case "mount":
+        t.setState({
+          volumes: s.volumes,
+          mounted: e.volume,
+          update: new Date()
+        });
+        return
+      case "unmount":
+        t.setState({
+          volumes: s.volumes,
+          mounted: "",
+          update: new Date()
+        })
+        return
+    }
   }
 
   refresh() {
@@ -46,7 +75,6 @@ class MountedVolumes extends Component {
     const t = this, s = t.state;
     fetch("/api/mount/" + n)
       .then(res => res.json())
-      .then(f => t.setState({volumes: s.volumes, update: new Date()}))
       .catch(e => {
         console.error(e)
       })
@@ -56,16 +84,13 @@ class MountedVolumes extends Component {
     const t = this, s = t.state;
     fetch("/api/unmount/" + n)
       .then(res => res.json())
-      .then(f => t.setState({volumes: s.volumes, update: new Date()}))
       .catch(e => {
         console.error(e)
       })
   }
 
   render() {
-    const t = this, p = t.props, s = t.state, vs = s.volumes;
-
-    console.log(s)
+    const t = this, s = t.state, vs = s.volumes;
 
     let children = [];
 
@@ -77,7 +102,7 @@ class MountedVolumes extends Component {
             avail = d.Bavail * d.Bsize,
             used = (d.Blocks - d.Bavail) * d.Bsize,
             total = d.Blocks * d.Bsize,
-            mounted = k === vs.mounted,
+            mounted = k === s.mounted,
             mountHandler = mounted ? () => t.unmountVolume(k) : () => t.mountVolume(k);
           children.push(<tr key={k}>
               <td className="cog">
