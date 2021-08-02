@@ -17,10 +17,10 @@ class Disksize extends Component {
     let i = 0, v = p.size;
     while (v >= 1024 && i < units.length) {
       i = i + 1
-      v = Math.floor(100 * v / 1024) / 100
+      v = v / 1024
     }
 
-    return <span>{v} {units[i]}</span>
+    return <span>{Math.floor(100 * v) / 100} {units[i]}</span>
   }
 }
 

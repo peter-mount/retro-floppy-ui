@@ -2,6 +2,13 @@
     background: #f8f9fa !important;
 }
 
+/* Used in tables with a cog icon/dropdown menu */
+.cog div.dropdown button {
+    line-height: 1;
+    margin: 0;
+    padding: 0;
+}
+
 /**/
 
 .uiOuter {

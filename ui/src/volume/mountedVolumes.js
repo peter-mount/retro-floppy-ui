@@ -1,8 +1,14 @@
 import React, {Component} from 'react';
 
+import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
+import Dropdown from "react-bootstrap/Dropdown";
 import Table from "react-bootstrap/Table";
+
 import Disksize from "../util/disksize";
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faCog, faPlus, faMinus} from '@fortawesome/free-solid-svg-icons';
+import {faUsb} from '@fortawesome/free-brands-svg-icons';
 
 /* MountedVolumes lists the available volumes in the UI */
 class MountedVolumes extends Component {
@@ -36,37 +42,75 @@ class MountedVolumes extends Component {
     });
   }
 
+  mountVolume(n) {
+    const t = this, s = t.state;
+    fetch("/api/mount/" + n)
+      .then(res => res.json())
+      .then(f => t.setState({volumes: s.volumes, update: new Date()}))
+      .catch(e => {
+        console.error(e)
+      })
+  }
+
+  unmountVolume(n) {
+    const t = this, s = t.state;
+    fetch("/api/unmount/" + n)
+      .then(res => res.json())
+      .then(f => t.setState({volumes: s.volumes, update: new Date()}))
+      .catch(e => {
+        console.error(e)
+      })
+  }
+
   render() {
-    const t = this, p = t.props, s = t.state;
+    const t = this, p = t.props, s = t.state, vs = s.volumes;
 
     console.log(s)
 
     let children = [];
 
-    if (s.volumes) {
-      Object.keys(s.volumes)
+    if (vs) {
+      Object.keys(vs.volumes)
         .sort((a, b) => a.localeCompare(b))
         .forEach(k => {
-          const d = s.volumes[k],
+          const d = vs.volumes[k],
             avail = d.Bavail * d.Bsize,
             used = (d.Blocks - d.Bavail) * d.Bsize,
-            total = d.Blocks * d.Bsize;
+            total = d.Blocks * d.Bsize,
+            mounted = k === vs.mounted,
+            mountHandler = mounted ? () => t.unmountVolume(k) : () => t.mountVolume(k);
           children.push(<tr key={k}>
-            <td>{k}</td>
-            <td><Disksize size={avail}/></td>
-            <td><Disksize size={used}/></td>
-            <td><Disksize size={total}/></td>
-          </tr>)
+              <td className="cog">
+                <Dropdown>
+                  <Dropdown.Toggle variant="link">
+                    <FontAwesomeIcon icon={mounted ? faUsb : faCog}/>
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    <Dropdown.Item eventKey="mount"
+                                   onSelect={mountHandler}>{mounted ? "Unmount" : "Mount"}</Dropdown.Item>
+                    <Dropdown.Divider/>
+                    <Dropdown.Item eventKey="destroy" disabled={mounted}>Destroy volume</Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+              </td>
+              <td>{k}</td>
+              <td><Disksize size={avail}/></td>
+              <td><Disksize size={used}/></td>
+              <td><Disksize size={total}/></td>
+            </tr>
+          )
         })
     }
 
-    return (<Card>
+    return (
+      <Card>
         <Card.Header>Volumes</Card.Header>
         <Card.Body>
           <Card.Text>
             <Table striped>
               <thead>
               <tr>
+                <th>&nbsp;</th>
                 <th>Volume</th>
                 <th>Free</th>
                 <th>Used</th>
@@ -77,6 +121,10 @@ class MountedVolumes extends Component {
             </Table>
           </Card.Text>
         </Card.Body>
+        <Card.Footer>
+          <Button variant="link"><FontAwesomeIcon icon={faPlus}/></Button>
+          <Button variant="link"><FontAwesomeIcon icon={faMinus}/></Button>
+        </Card.Footer>
       </Card>
     )
   }
