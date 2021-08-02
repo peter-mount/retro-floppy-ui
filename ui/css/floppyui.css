@@ -1,3 +1,9 @@
+.accordion-button:not(.collapsed) {
+    background: #f8f9fa !important;
+}
+
+/**/
+
 .uiOuter {
     position: absolute;
     left: 0;

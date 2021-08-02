@@ -14,9 +14,22 @@ import '../css/floppyui.css';
 
 import {faPowerOff} from '@fortawesome/free-solid-svg-icons/faPowerOff';
 import MountedVolumes from "./volume/mountedVolumes";
-import {Accordion} from "react-bootstrap";
 
 class FloppyUI extends Component {
+
+  componentDidMount() {
+    const t = this;
+    let url = (location.protocol === 'http:' ? 'ws:' : 'wss:') + '//' + document.domain + '/ws'
+    console.log("WS connect", url)
+    t.socket = new WebSocket(url);
+    t.socket.addEventListener("open", e => {
+      console.log("Open")
+      t.socket.send("hello server!")
+    })
+    t.socket.addEventListener("message", e => {
+      console.log("Received", e.data)
+    })
+  }
 
   render() {
     const t = this,
@@ -54,9 +67,7 @@ class FloppyUI extends Component {
         <Container>
           <Row>
             <Col>
-              <Accordion>
-                <MountedVolumes/>
-              </Accordion>
+              <MountedVolumes/>
             </Col>
             <Col>2</Col>
             <Col>3</Col>

@@ -3,12 +3,14 @@ package api
 import (
 	"github.com/gorilla/handlers"
 	"github.com/peter-mount/floppyui/server/volume"
+	"github.com/peter-mount/floppyui/server/ws"
 	"github.com/peter-mount/go-kernel"
 	"github.com/peter-mount/go-kernel/rest"
 )
 
 type Api struct {
 	restService *rest.Server          // web server
+	ws          *ws.WS                // Websocket handler
 	vm          *volume.VolumeManager // Volume manager
 	db          *DB                   // Database
 }
@@ -43,27 +45,35 @@ func (a *Api) Init(k *kernel.Kernel) error {
 	}
 	a.db = (service).(*DB)
 
+	service, err = k.AddService(&ws.WS{})
+	if err != nil {
+		return err
+	}
+	a.ws = (service).(*ws.WS)
+
 	return nil
 }
 
 func (a *Api) PostInit() error {
 
-	rest := a.restService
+	restService := a.restService
 
 	// Add compression to output
-	rest.Use(handlers.CompressHandler)
+	restService.Use(handlers.CompressHandler)
 
 	// System status
-	rest.Handle("/api/status", a.getStatus).Methods("GET")
+	restService.Handle("/api/status", a.getStatus).Methods("GET")
 
-	rest.Handle("/api/list", a.listVolumes).Methods("GET")
-	rest.Handle("/api/list/{volume}/{path:[0-9a-zA-Z/._ -]*}", a.listFiles).Methods("GET")
+	restService.Handle("/api/list", a.listVolumes).Methods("GET")
+	restService.Handle("/api/list/{volume}/{path:[0-9a-zA-Z/._ -]*}", a.listFiles).Methods("GET")
 
 	// DB access - used for UI persistence
 	path := "/api/data/{bucket}/{key:[0-9a-zA-Z/._ -]*}"
-	rest.Handle(path, a.db.get).Methods("GET")
-	rest.Handle(path, a.db.put).Methods("PUT", "POST")
-	rest.Handle(path, a.db.put).Methods("DELETE")
+	restService.Handle(path, a.db.get).Methods("GET")
+	restService.Handle(path, a.db.put).Methods("PUT", "POST")
+	restService.Handle(path, a.db.put).Methods("DELETE")
 
+	// Websocket
+	restService.HandleFunc("/ws", a.ws.ServeWs)
 	return nil
 }

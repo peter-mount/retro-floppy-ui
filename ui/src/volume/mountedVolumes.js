@@ -41,33 +41,36 @@ class MountedVolumes extends Component {
 
     console.log(s)
 
-/*
-    let children = [];
+    /*
+        let children = [];
 
-    if (s.file && s.file.files) {
-      s.file.files
-        .sort((a, b) => a.name.localeCompare(b.name))
-        .forEach(f => {
+        if (s.file && s.file.files) {
+          s.file.files
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .forEach(f => {
 
-          if (f.dir) {
-            // Icon to open a folder
-            children.push(<Icon key={p.path + ":" + f.name} name={f.name}
-                                icon={amDisk} onDoubleClick={e => p.wb.openFolder({
-              name: f.name,
-              path: f.fullPath,
-            }, e)}/>)
-          }
-        })
-    }
-*/
+              if (f.dir) {
+                // Icon to open a folder
+                children.push(<Icon key={p.path + ":" + f.name} name={f.name}
+                                    icon={amDisk} onDoubleClick={e => p.wb.openFolder({
+                  name: f.name,
+                  path: f.fullPath,
+                }, e)}/>)
+              }
+            })
+        }
+    */
 
     return (
-      <Accordion.Item eventKey={0}>
-        <Accordion.Header>Volumes</Accordion.Header>
-        <Accordion.Body>
-          Some body content
-        </Accordion.Body>
-      </Accordion.Item>)
+      <Accordion activeKey={0}>
+        <Accordion.Item eventKey={0}>
+          <Accordion.Header>Volumes</Accordion.Header>
+          <Accordion.Body>
+            Some body content
+          </Accordion.Body>
+        </Accordion.Item>
+      </Accordion>
+    )
   }
 }
 
