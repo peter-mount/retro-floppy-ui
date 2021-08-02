@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 
-import {Accordion} from "react-bootstrap";
+import Card from "react-bootstrap/Card";
+import Table from "react-bootstrap/Table";
+import Disksize from "../util/disksize";
 
 /* MountedVolumes lists the available volumes in the UI */
 class MountedVolumes extends Component {
@@ -29,10 +31,8 @@ class MountedVolumes extends Component {
   }
 
   update(t, f) {
-    const s = t.state;
     t.setState({
-      open: s.open,
-      file: f,
+      volumes: f,
     });
   }
 
@@ -41,35 +41,43 @@ class MountedVolumes extends Component {
 
     console.log(s)
 
-    /*
-        let children = [];
+    let children = [];
 
-        if (s.file && s.file.files) {
-          s.file.files
-            .sort((a, b) => a.name.localeCompare(b.name))
-            .forEach(f => {
+    if (s.volumes) {
+      Object.keys(s.volumes)
+        .sort((a, b) => a.localeCompare(b))
+        .forEach(k => {
+          const d = s.volumes[k],
+            avail = d.Bavail * d.Bsize,
+            used = (d.Blocks - d.Bavail) * d.Bsize,
+            total = d.Blocks * d.Bsize;
+          children.push(<tr key={k}>
+            <td>{k}</td>
+            <td><Disksize size={avail}/></td>
+            <td><Disksize size={used}/></td>
+            <td><Disksize size={total}/></td>
+          </tr>)
+        })
+    }
 
-              if (f.dir) {
-                // Icon to open a folder
-                children.push(<Icon key={p.path + ":" + f.name} name={f.name}
-                                    icon={amDisk} onDoubleClick={e => p.wb.openFolder({
-                  name: f.name,
-                  path: f.fullPath,
-                }, e)}/>)
-              }
-            })
-        }
-    */
-
-    return (
-      <Accordion activeKey={0}>
-        <Accordion.Item eventKey={0}>
-          <Accordion.Header>Volumes</Accordion.Header>
-          <Accordion.Body>
-            Some body content
-          </Accordion.Body>
-        </Accordion.Item>
-      </Accordion>
+    return (<Card>
+        <Card.Header>Volumes</Card.Header>
+        <Card.Body>
+          <Card.Text>
+            <Table striped>
+              <thead>
+              <tr>
+                <th>Volume</th>
+                <th>Free</th>
+                <th>Used</th>
+                <th>Size</th>
+              </tr>
+              </thead>
+              <tbody>{children}</tbody>
+            </Table>
+          </Card.Text>
+        </Card.Body>
+      </Card>
     )
   }
 }
