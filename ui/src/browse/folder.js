@@ -89,7 +89,7 @@ class Folder extends Component {
     return (<div className="folder">
       <span onClick={() => t.toggle(t)}>
         <FontAwesomeIcon icon={s.open ? faFolderOpen : faFolder}/>
-        <span className="fileLabel">{s.path === "" ? "/" : baseName(s.path)}</span>
+        <div className="fileLabel">{s.path === "" ? "/" : baseName(s.path)}</div>
       </span>
       <div>{dirs}{files}</div>
     </div>);

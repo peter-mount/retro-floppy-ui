@@ -89,12 +89,17 @@
     width: 100%;
 }
 
+.folder > span:hover {
+    background: rgba(0, 0, 0, .05);
+}
+
 .folder > span > svg {
     width: 1.5em !important;
 }
 
 .folder > span > .fileLabel {
     margin-left: .5em;
+    display: inline-block;
 }
 
 .folder > div {

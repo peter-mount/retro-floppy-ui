@@ -9,48 +9,24 @@ class Volume extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      open: props.open,
-    };
+    this.state = {};
   }
 
   componentDidMount() {
-    const t = this, s = t.state;
-    if (s.open) {
-      this.refresh()
-    }
+    this.refresh()
   }
 
   refresh() {
-    const t = this, p = t.props, s = t.state;
+    const t = this, p = t.props;
 
     let url = '/api/list/' + p.name + "/";
 
     fetch(url)
       .then(res => res.json())
-      .then(f => t.update(t, f))
+      .then(f => t.setState({file: f}))
       .catch(e => {
         console.error(url, e)
       })
-  }
-
-  update(t, f) {
-    const s = t.state;
-    t.setState({
-      open: s.open,
-      file: f,
-    });
-  }
-
-  toggle(t) {
-    const p = t.props,
-      s = t.state;
-
-    t.setState({
-      open: p.root ? true : !s.open,
-      path: s.path,
-      file: p.root || !s.open ? s.file : null,
-    });
   }
 
   render() {
@@ -58,7 +34,7 @@ class Volume extends Component {
       p = t.props,
       s = t.state;
 
-    if (s.open && !s.file) {
+    if (!s.file) {
       t.refresh()
     }
 
@@ -91,14 +67,7 @@ class Volume extends Component {
       files.sort((a, b) => a.name < b.name)
     }
 
-    return (<div className="folder">
-      <span onClick={() => t.toggle(t)}>
-        <FontAwesomeIcon icon={s.open ? faMinusSquare : faPlusSquare}/>
-        <FontAwesomeIcon icon={faHdd}/>
-        <span className="fileLabel">{p.name}</span>
-      </span>
-      <div>{dirs}{files}</div>
-    </div>);
+    return <div>{dirs}{files}</div>
   }
 
 }
