@@ -68,6 +68,7 @@ class MountedVolumes extends Component {
   update(t, f) {
     t.setState({
       volumes: f,
+      mounted: f ? f.mounted : null,
     });
   }
 

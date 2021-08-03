@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/peter-mount/floppyui/server/util"
 	"golang.org/x/sys/unix"
+	"io/ioutil"
 	"log"
 	"path"
 	"strconv"
@@ -11,12 +12,14 @@ import (
 )
 
 type Volume struct {
-	name       string         // Volume name
-	mountPoint string         // Mounting point in filesystem
-	volume     string         // Volume backing store path
-	status     string         // Status of this volume
-	mutex      sync.Mutex     // Mutex to allow atomic updates
-	vm         *VolumeManager // pointer to VolumeManager
+	name         string         // Volume name
+	mountPoint   string         // Mounting point in filesystem
+	volume       string         // Volume backing store path
+	status       string         // Status of this volume
+	mutex        sync.Mutex     // Mutex to allow atomic updates
+	vm           *VolumeManager // pointer to VolumeManager
+	contents     Directory      // Scanned contents of volume
+	selectedFile string         // The selected file
 }
 
 const unitialised = "Uninitialised"
@@ -73,6 +76,14 @@ func (v *Volume) LocalPath(p string) string {
 	return path.Join(v.MountPoint(), p)
 }
 
+func (v *Volume) VolumePath(p string) string {
+	if len(p) <= len(v.mountPoint) {
+		return ""
+	}
+
+	return p[len(v.mountPoint)+1:]
+}
+
 // Statfs updates the provided unix.Statfs_t with details of this Volume
 func (v *Volume) Statfs(t *unix.Statfs_t) error {
 	return unix.Statfs(v.MountPoint(), t)
@@ -87,6 +98,14 @@ func (v *Volume) Mount() error {
 	}
 
 	err = v.vm.exec.Exec("mount", v.Volume(), v.MountPoint(), "-o", "users,umask=000")
+	if err != nil {
+		log.Println("Mount", v, "failed", err.Error())
+		//return err
+	}
+
+	v.readSelectedFile()
+
+	err = v.scan()
 	if err != nil {
 		return err
 	}
@@ -131,6 +150,21 @@ func (v *Volume) String() string {
 		util.FileSize(st.Bavail*uint64(st.Bsize)),
 		util.FileSize(st.Blocks*uint64(st.Bsize)),
 	)
+}
+
+func (v *Volume) SelectedFile() string {
+	return v.selectedFile
+}
+
+func (v *Volume) readSelectedFile() {
+	b, err := ioutil.ReadFile(path.Join(v.MountPoint(), "IMAGE_A.CFG"))
+	if err != nil {
+		log.Printf("GoTek GetVolume %v", err)
+		v.selectedFile = ""
+	} else {
+		v.selectedFile = string(b)
+	}
+	log.Println("Vol", v.name, "selected", v.selectedFile)
 }
 
 // Create creates the volume backingstore. The size is in MiB
