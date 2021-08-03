@@ -15,6 +15,7 @@ import '../css/floppyui.css';
 import {faPowerOff} from '@fortawesome/free-solid-svg-icons/faPowerOff';
 import MountedVolumes from "./volume/mountedVolumes";
 import MountedDisk from "./volume/mountedDisk";
+import VolumeBrowser from "./browse/volumeBrowser";
 
 class FloppyUI extends Component {
 
@@ -55,6 +56,10 @@ class FloppyUI extends Component {
         h.forEach(r => r(v))
       }
     })
+  }
+
+  broadcast(v) {
+    this.socket.send(JSON.stringify(v))
   }
 
   componentDidMount() {
@@ -113,7 +118,9 @@ class FloppyUI extends Component {
             <Col>
               <MountedVolumes ws={t}/>
             </Col>
-            <Col>2</Col>
+            <Col>
+              <VolumeBrowser ws={t}/>
+            </Col>
             <Col>
               <MountedDisk ws={t}/>
             </Col>

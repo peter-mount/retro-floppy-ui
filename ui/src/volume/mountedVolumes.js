@@ -91,7 +91,7 @@ class MountedVolumes extends Component {
   }
 
   render() {
-    const t = this, s = t.state, vs = s.volumes;
+    const t = this, p = t.props, s = t.state, vs = s.volumes;
 
     let children = [];
 
@@ -112,6 +112,10 @@ class MountedVolumes extends Component {
                     <FontAwesomeIcon icon={mounted ? faUsb : faCog}/>
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
+                    <Dropdown.Item eventKey="explore" onSelect={() => p.ws.broadcast({
+                      id: "exploreVolume",
+                      volume: k
+                    })}>Explore</Dropdown.Item>
                     <Dropdown.Item eventKey="mount"
                                    onSelect={mountHandler}>{mounted ? "Unmount" : "Mount"}</Dropdown.Item>
                     <Dropdown.Divider/>

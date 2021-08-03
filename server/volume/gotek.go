@@ -45,12 +45,17 @@ func (g *Gotek) Mounted() string {
 	return g.volume
 }
 
+func (g *Gotek) unmount() {
+	_ = g.exec.Exec("modprobe", "-r", "g_mass_storage")
+}
+
 func (g *Gotek) Unmount() {
+	// Unmount from GoTek
 	if g.volume != "" {
 		volume := g.vm.GetVolume(g.volume)
 		if volume != nil {
-			// Unmount from GoTek
-			_ = g.exec.Exec("modprobe", "-r", "g_mass_storage")
+
+			g.unmount()
 
 			// mount in local fs
 			_ = volume.Mount()
@@ -69,7 +74,8 @@ func (g *Gotek) Mount(v string) error {
 	}
 
 	// Ensure volume is unmounted & the gotek is unmounted from any other volume
-	g.Unmount()
+	g.unmount()
+	_ = volume.Umount()
 
 	// Mount on the gotek
 	err := g.exec.Exec("modprobe",
