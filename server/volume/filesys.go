@@ -1,11 +1,11 @@
 package volume
 
 import (
-	"errors"
 	"log"
 	"os"
 	"path"
 	"path/filepath"
+	"strings"
 )
 
 type FileEnt interface {
@@ -21,6 +21,7 @@ type File interface {
 type Directory interface {
 	FileEnt
 	Files() []FileEnt
+	Find(n string) FileEnt
 }
 
 type file struct {
@@ -49,7 +50,7 @@ type directory struct {
 	name  string
 	path  string
 	stat  os.FileInfo
-	files []FileEnt // Files in this directory
+	files map[string]FileEnt // Files in this directory
 }
 
 func (d directory) Name() string {
@@ -65,29 +66,37 @@ func (d directory) Stat() os.FileInfo {
 }
 
 func (d directory) Files() []FileEnt {
-	return d.files
+	var a []FileEnt
+	for _, e := range d.files {
+		a = append(a, e)
+	}
+	return a
 }
 
 func (d directory) String() string {
 	return "dir:" + d.path
 }
 
+func (d directory) Find(n string) FileEnt {
+	return d.files[n]
+}
+
 func (d *directory) add(f FileEnt) {
-	d.files = append(d.files, f)
+	d.files[f.Name()] = f
 }
 
 func (v *Volume) findDir(p string) Directory {
-	dir := path.Dir(p)
 	found := v.contents
-	_ = v.walkDir(func(f FileEnt) error {
-		if d, isDir := f.(Directory); isDir {
-			if f.Path() == dir {
+	for _, dp := range strings.Split(path.Dir(p), string(os.PathSeparator)) {
+		if dp != "." {
+			e := found.Find(dp)
+			if d, ok := e.(Directory); ok {
 				found = d
-				return errors.New("found")
+			} else {
+				return nil
 			}
 		}
-		return nil
-	})
+	}
 	return found
 }
 
@@ -113,7 +122,9 @@ func (v *Volume) walkDirInt(d Directory, f func(f FileEnt) error) error {
 
 func (v *Volume) scan() error {
 	log.Println("Scanning", v.name)
-	v.contents = &directory{}
+	v.contents = &directory{
+		files: make(map[string]FileEnt),
+	}
 	return filepath.Walk(v.mountPoint, func(p string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
@@ -123,9 +134,10 @@ func (v *Volume) scan() error {
 		var f FileEnt
 		if info.IsDir() {
 			f = &directory{
-				name: path.Base(pName),
-				path: pName,
-				stat: info,
+				name:  path.Base(pName),
+				path:  pName,
+				stat:  info,
+				files: make(map[string]FileEnt),
 			}
 		} else {
 			f = &file{

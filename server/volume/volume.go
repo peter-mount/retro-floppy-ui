@@ -84,6 +84,10 @@ func (v *Volume) VolumePath(p string) string {
 	return p[len(v.mountPoint)+1:]
 }
 
+func (v *Volume) Contents() Directory {
+	return v.contents
+}
+
 // Statfs updates the provided unix.Statfs_t with details of this Volume
 func (v *Volume) Statfs(t *unix.Statfs_t) error {
 	return unix.Statfs(v.MountPoint(), t)
