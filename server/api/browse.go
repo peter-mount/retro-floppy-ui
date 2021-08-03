@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"path"
+	"sort"
 	"strings"
 	"time"
 )
@@ -141,6 +142,10 @@ func (a *Api) listFiles(r *rest.Rest) error {
 			}
 		}
 	}
+
+	sort.SliceStable(fe.Files, func(i, j int) bool {
+		return strings.ToLower(fe.Files[i].Name) < strings.ToLower(fe.Files[j].Name)
+	})
 
 	r.Status(200).
 		JSON().
