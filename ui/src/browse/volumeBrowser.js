@@ -41,24 +41,20 @@ class VolumeBrowser extends Component {
     const t = this,
       s = t.state;
 
-    if (s.volume) {
-      return (
-        <Card>
-          <Card.Header>Volume: {s.volume}</Card.Header>
-          <Card.Body>
-            <Card.Text>
-              <Volume name={s.volume}/>
-            </Card.Text>
-          </Card.Body>
-          <Card.Footer>
-            <Button variant="link"><FontAwesomeIcon icon={faPlus}/></Button>
-            <Button variant="link"><FontAwesomeIcon icon={faMinus}/></Button>
-          </Card.Footer>
-        </Card>
-      )
-    }
-
-    return "";
+    return (
+      <Card>
+        <Card.Header>Volume: {s.volume ? s.volume : 'None selected'}</Card.Header>
+        <Card.Body>
+          <Card.Text>
+            <Volume name={s.volume}/>
+          </Card.Text>
+        </Card.Body>
+        <Card.Footer>
+          <Button variant="link"><FontAwesomeIcon icon={faPlus}/></Button>
+          <Button variant="link"><FontAwesomeIcon icon={faMinus}/></Button>
+        </Card.Footer>
+      </Card>
+    )
   }
 
 }

@@ -2,8 +2,8 @@ package api
 
 import (
 	"github.com/peter-mount/floppyui/server/volume"
+	"github.com/peter-mount/floppyui/server/ws"
 	"github.com/peter-mount/go-kernel/rest"
-	"log"
 	"os"
 	"path"
 	"sort"
@@ -70,11 +70,11 @@ func (a *Api) listFiles(r *rest.Rest) error {
 	p := r.Var("path")
 
 	p = path.Clean(p)
-	log.Println(p)
+	ws.Println(p)
 
 	root := vol.Contents()
 	if root == nil {
-		log.Println("Fail no root")
+		ws.Println("Fail no root")
 		r.Status(404)
 		return nil
 	}
@@ -86,12 +86,12 @@ func (a *Api) listFiles(r *rest.Rest) error {
 
 	// Skip root
 	if dp != "" {
-		log.Printf("scan \"%s\" \"%s\"", dp, fp)
+		ws.Printf("scan \"%s\" \"%s\"", dp, fp)
 		da := strings.Split(dp, string(os.PathSeparator))
 		for idx, n := range da {
 			e := root.Find(n)
 			if e == nil {
-				log.Printf("Fail %d \"%s\"", idx, n)
+				ws.Printf("Fail %d \"%s\"", idx, n)
 				r.Status(404)
 				return nil
 			}
@@ -99,7 +99,7 @@ func (a *Api) listFiles(r *rest.Rest) error {
 				root = de
 			} else {
 				// It's a file not a directory so 406 Not Acceptable
-				log.Printf("Fail %d \"%s\" Wrong type %v", idx, n, root)
+				ws.Printf("Fail %d \"%s\" Wrong type %v", idx, n, root)
 				r.Status(406)
 				return nil
 			}
@@ -111,16 +111,16 @@ func (a *Api) listFiles(r *rest.Rest) error {
 	f = root
 	// Skip . which is the current directory
 	if fp != "" && fp != "." {
-		log.Println("find", fp)
+		ws.Println("find", fp)
 		f = root.Find(fp)
-		log.Println("found", f)
+		ws.Println("found", f)
 		if f == nil {
 			r.Status(404)
 			return nil
 		}
 	}
 
-	log.Println("File", f)
+	ws.Println("File", f)
 	fe := getFileEntry(vol.Name(), p, f)
 	// Root directory is special
 	if fe.Root {

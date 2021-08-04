@@ -3,9 +3,9 @@ package volume
 import (
   "fmt"
   "github.com/peter-mount/floppyui/server/util"
+  "github.com/peter-mount/floppyui/server/ws"
   "golang.org/x/sys/unix"
   "io/ioutil"
-  "log"
   "path"
   "strconv"
   "sync"
@@ -58,7 +58,7 @@ func (v *Volume) setStatus(s string) {
   v.status = s
 
   if s != "" {
-    log.Printf("%s: %s", v.name, s)
+    ws.Printf("%s: %s", v.name, s)
   }
 }
 
@@ -103,7 +103,7 @@ func (v *Volume) Mount(scan bool) error {
 
   err = v.vm.exec.Exec("mount", v.Volume(), v.MountPoint(), "-o", "users,umask=000")
   if err != nil {
-    log.Println("Mount", v, "failed", err.Error())
+    ws.Println("Mount", v, "failed", err.Error())
     //return err
   }
 
@@ -165,12 +165,12 @@ func (v *Volume) getSelectedFilename() string {
 func (v *Volume) readSelectedFile() {
   b, err := ioutil.ReadFile(v.getSelectedFilename())
   if err != nil {
-    log.Printf("GoTek GetVolume %v", err)
+    ws.Printf("GoTek GetVolume %v", err)
     v.selectedFile = ""
   } else {
     v.selectedFile = string(b)
   }
-  log.Println("Vol", v.name, "selected", v.selectedFile)
+  ws.Println("Vol", v.name, "selected", v.selectedFile)
 }
 
 func (v *Volume) SelectFile(f string) error {

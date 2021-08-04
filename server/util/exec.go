@@ -14,7 +14,7 @@ func (e *Exec) Name() string {
 
 func (e *Exec) Exec(args ...string) error {
 	cmd := exec.Command("sudo", args...)
-	//log.Println("exec:", strings.Join(args, " "))
+	//ws.Println("exec:", strings.Join(args, " "))
 
 	cmd.Stdout = os.Stdout
 	//cmd.Stderr = os.Stderr

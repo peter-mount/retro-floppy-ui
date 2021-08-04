@@ -16,6 +16,8 @@ import {faPowerOff} from '@fortawesome/free-solid-svg-icons/faPowerOff';
 import MountedVolumes from "./volume/mountedVolumes";
 import MountedDisk from "./volume/mountedDisk";
 import VolumeBrowser from "./browse/volumeBrowser";
+import DiskInfo from "./disc/discViewer";
+import LogViewer from "./util/LogViewer";
 
 class FloppyUI extends Component {
 
@@ -115,14 +117,20 @@ class FloppyUI extends Component {
         </Navbar>
         <Container>
           <Row>
-            <Col>
+            <Col xs={6}>
               <MountedVolumes ws={t}/>
             </Col>
-            <Col>
+            <Col xs={6}>
+              <MountedDisk ws={t}/>
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={6}>
               <VolumeBrowser ws={t}/>
             </Col>
-            <Col>
-              <MountedDisk ws={t}/>
+            <Col xs={6}>
+              <DiskInfo ws={t}/>
+              <LogViewer ws={t}/>
             </Col>
           </Row>
         </Container>

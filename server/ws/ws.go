@@ -17,6 +17,8 @@ func (w *WS) Name() string {
 }
 
 func (w *WS) Start() error {
+  logger = w
+
   w.broadcast = make(chan []byte)
   w.register = make(chan *Client)
   w.unregister = make(chan *Client)
@@ -27,6 +29,10 @@ func (w *WS) Start() error {
   go w.run()
 
   return nil
+}
+
+func (w *WS) Stop() {
+  logger = nil
 }
 
 func (w *WS) Broadcast(v interface{}) error {
@@ -66,7 +72,7 @@ func (w *WS) run() {
                 Time: t,
               })
               if err != nil {
-                log.Printf("WS.run %v", err)
+                ws.Printf("WS.run %v", err)
               }
             }()
       */

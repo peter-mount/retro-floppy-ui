@@ -110,3 +110,20 @@
 .folder:not(:last-child) > div {
     border-left: 1px dashed black;
 }
+
+.card {
+    margin-bottom: 0.25em;
+}
+
+.consolePanel {
+    overflow-y: hidden;
+    overflow-x: auto;
+}
+
+.consolePanel .consoleLine {
+    font-family: monospace, Monospaced;
+    font-size: 1em;
+    height: calc(1em + 1px);
+    display: block;
+    width: 80em;
+}

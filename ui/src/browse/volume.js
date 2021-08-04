@@ -19,14 +19,17 @@ class Volume extends Component {
   refresh() {
     const t = this, p = t.props;
 
-    let url = '/api/list/' + p.name + "/";
+    // Only refresh if we have a volume, undefined means none selected
+    if (p.name) {
+      let url = '/api/list/' + p.name + "/";
 
-    fetch(url)
-      .then(res => res.json())
-      .then(f => t.setState({file: f}))
-      .catch(e => {
-        console.error(url, e)
-      })
+      fetch(url)
+        .then(res => res.json())
+        .then(f => t.setState({file: f}))
+        .catch(e => {
+          console.error(url, e)
+        })
+    }
   }
 
   render() {

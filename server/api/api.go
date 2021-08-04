@@ -74,6 +74,8 @@ func (a *Api) PostInit() error {
   restService.Handle("/api/list", a.listVolumes).Methods("GET")
   restService.Handle("/api/list/{volume}/{path:[0-9a-zA-Z/._ -]*}", a.listFiles).Methods("GET")
 
+  restService.Handle("/api/mount/{volume}/{path:[0-9a-zA-Z/._ -]*}", a.mountDisk).Methods("GET")
+
   restService.Handle("/api/mount/{volume}", a.mountVolume).Methods("GET")
   restService.Handle("/api/unmount/{volume}", a.unmountVolume).Methods("GET")
 

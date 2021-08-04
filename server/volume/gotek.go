@@ -15,6 +15,9 @@ type Gotek struct {
   volume string         // Currently mounted volume
 }
 
+// The delay between unmounting gotek & mounting it
+const mountDelay = 25 * time.Millisecond
+
 func (g *Gotek) Name() string {
   return "Gotek"
 }
@@ -88,7 +91,7 @@ func (g *Gotek) MountDisk(v, newFile string) error {
   }
 
   // Time to allow the GoTek to realise it's disconnected
-  time.Sleep(100 * time.Millisecond)
+  time.Sleep(mountDelay)
 
   // If selected file needs changing then quickly mount (no scan) if required & update it
   if volume.SelectedFile() != newFile {

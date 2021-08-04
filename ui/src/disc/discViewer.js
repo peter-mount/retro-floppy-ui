@@ -5,7 +5,7 @@ import Card from "react-bootstrap/Card";
 import Table from "react-bootstrap/Table";
 
 /* MountedVolumes lists the available volumes in the UI */
-class MountedDisk extends Component {
+class DiskInfo extends Component {
 
   constructor(props) {
     super(props);
@@ -16,10 +16,11 @@ class MountedDisk extends Component {
     const t = this, p = t.props;
     t.wshandler = e => t.handleWS(e)
     p.ws.register({
-      diskSelect: t.wshandler,
+      diskInfo: t.wshandler,
       unmount: t.wshandler,
     })
 
+/*
     fetch("/api/list")
       .then(res => res.json())
       .then(f => t.setState({
@@ -29,6 +30,7 @@ class MountedDisk extends Component {
       .catch(e => {
         console.error(url, e)
       })
+*/
   }
 
   componentWillUnmount() {
@@ -38,61 +40,51 @@ class MountedDisk extends Component {
   handleWS(e) {
     const t = this, s = t.state;
     switch (e.id) {
-      case "diskSelect":
+      case "diskInfo":
         t.setState({
-          volume: e.volume,
-          file: e.file,
+          info: e,
           update: new Date()
         });
         return
       case "unmount":
         // if volume that was unmounted is this one then remove it
         // Usually it's always the case but can happen if the messages are out of sync
-        if (e.volume === s.volume) {
-          t.setState({
-            volume: null,
-            file: null,
-            update: new Date()
-          });
-        }
+        //if (e.volume === s.volume) {
+        t.setState({
+          info: null,
+          update: new Date()
+        });
+        //}
         return
     }
   }
 
-  unmountDisk(e) {
-    console.log("Unmount disk")
-  }
-
   render() {
     const t = this,
-      s = t.state,
-      mounted = s.volume && s.file;
+      s = t.state;
 
     return (
       <Card>
-        <Card.Header>Mounted Disk</Card.Header>
+        <Card.Header>Disk Info</Card.Header>
         <Card.Body>
           <Card.Text>
             <Table>
               <tbody>
               <tr>
                 <th>Volume</th>
-                <td>{s.volume ? s.volume : "Not volume mounted"}</td>
+                <td>Not volume mounted</td>
               </tr>
               <tr>
                 <th>Disk</th>
-                <td>{mounted ? s.file : "No disk mounted"}</td>
+                <td>No disk mounted</td>
               </tr>
               </tbody>
             </Table>
           </Card.Text>
         </Card.Body>
-        <Card.Footer>
-          <Button disabled={!mounted} onSelect={e => t.unmountDisk(e)}>Unmount Disk</Button>
-        </Card.Footer>
       </Card>
     )
   }
 }
 
-export default MountedDisk;
+export default DiskInfo;

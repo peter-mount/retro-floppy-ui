@@ -12,12 +12,19 @@ class File extends Component {
     };
   }
 
+  doubleClick(e) {
+    fetch('/api/mount/' + this.props.info.fullPath)
+      .catch(e => {
+        console.error(url, e)
+      })
+  }
+
   render() {
     const t = this,
       s = t.state,
       info = s.info;
     return (<div className="folder">
-      <span>
+      <span onDoubleClick={e => t.doubleClick(e)}>
         <FontAwesomeIcon icon={faSave}/>
         <span className="fileLabel">{info.name}</span>
       </span>

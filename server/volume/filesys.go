@@ -2,7 +2,6 @@ package volume
 
 import (
   "github.com/peter-mount/floppyui/server/ws"
-  "log"
   "os"
   "path"
   "path/filepath"
@@ -86,9 +85,9 @@ func (d *directory) add(f FileEnt) {
   d.files[f.Name()] = f
 }
 
-func (v *Volume) findDir(p string) Directory {
+func (v *Volume) FindPath(p string) FileEnt {
   found := v.contents
-  for _, dp := range strings.Split(path.Dir(p), string(os.PathSeparator)) {
+  for _, dp := range strings.Split(p, string(os.PathSeparator)) {
     if dp != "." {
       e := found.Find(dp)
       if d, ok := e.(Directory); ok {
@@ -99,6 +98,10 @@ func (v *Volume) findDir(p string) Directory {
     }
   }
   return found
+}
+
+func (v *Volume) findDir(p string) Directory {
+  return v.FindPath(path.Dir(p)).(Directory)
 }
 
 func (v *Volume) walkDir(f func(f FileEnt) error) error {
@@ -122,7 +125,7 @@ func (v *Volume) walkDirInt(d Directory, f func(f FileEnt) error) error {
 }
 
 func (v *Volume) scan() error {
-  log.Println("Scanning", v.name)
+  ws.Println("Scanning", v.name)
   v.contents = &directory{
     files: make(map[string]FileEnt),
   }
@@ -161,7 +164,7 @@ func (v *Volume) scan() error {
     err = v.vm.ws.Broadcast(ws.Message{
       ID:     "diskScan",
       Volume: v.name,
-      File: v.selectedFile,
+      File:   v.selectedFile,
     })
   }
 

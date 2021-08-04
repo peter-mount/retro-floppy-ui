@@ -5,7 +5,6 @@ import (
   "github.com/peter-mount/floppyui/server/ws"
   "github.com/peter-mount/go-kernel"
   "golang.org/x/sys/unix"
-  "log"
   "os"
   "sort"
   "sync"
@@ -51,7 +50,7 @@ func (v *VolumeManager) PostInit() error {
 }
 
 func (v *VolumeManager) Start() error {
-  log.Println("Initialising volumes")
+  ws.Println("Initialising volumes")
 
   // Ensure volumes directory exist
   err := v.exec.Mkdir(Volumes)
@@ -85,7 +84,7 @@ func (v *VolumeManager) Start() error {
 // Stop the volumes unmounting them
 // FIXME this fails probably down to the signal terminating it cancelling the umount commands
 func (v *VolumeManager) Stop() {
-  log.Println("Unmounting volumes")
+  ws.Println("Unmounting volumes")
 
   _ = v.ForEach(func(volume *Volume) error {
     _ = volume.Umount()
@@ -104,7 +103,7 @@ func (v *VolumeManager) AddVolume(n string) error {
 
   vol := v.newVolume(n)
 
-  //log.Println("Found volume", n)
+  //ws.Println("Found volume", n)
 
   // Ensure its not mounted - ignore the error
   _ = vol.Umount()
