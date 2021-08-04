@@ -44,7 +44,7 @@ class VolumeBrowser extends Component {
     if (s.volume) {
       return (
         <Card>
-          <Card.Header>Disk Explorer</Card.Header>
+          <Card.Header>Volume: {s.volume}</Card.Header>
           <Card.Body>
             <Card.Text>
               <Volume name={s.volume}/>
