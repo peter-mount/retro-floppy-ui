@@ -127,22 +127,12 @@ class FloppyUI extends Component {
             <Navbar.Toggle aria-controls="basic-navbar-nav"/>
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="me-auto">
-                <Nav.Link>Home</Nav.Link>
-                <Nav.Link>Link</Nav.Link>
-                <NavDropdown title="Link" id="navbarScrollingDropdown">
-                  <NavDropdown.Item>Action</NavDropdown.Item>
-                  <NavDropdown.Item>Another action</NavDropdown.Item>
-                  <NavDropdown.Divider/>
-                  <NavDropdown.Item>Something else here</NavDropdown.Item>
-                </NavDropdown>
-                <Nav.Link href="#" disabled>
-                  Link
-                </Nav.Link>
               </Nav>
               <Nav>
                 <NavDropdown title={<span><FontAwesomeIcon icon={faPowerOff}/></span>}>
                   <NavDropdown.Item>Logout</NavDropdown.Item>
                   <NavDropdown.Divider/>
+                  <NavDropdown.Item onSelect={e => t.updateSystem()}>Update system</NavDropdown.Item>
                   <NavDropdown.Item>Shutdown system</NavDropdown.Item>
                   <NavDropdown.Item>Reboot system</NavDropdown.Item>
                 </NavDropdown>
@@ -187,6 +177,11 @@ class FloppyUI extends Component {
         </Container>
       </div>
     )
+  }
+
+  updateSystem() {
+    fetch("/api/system/update")
+      .catch(e => console.log(e))
   }
 }
 
