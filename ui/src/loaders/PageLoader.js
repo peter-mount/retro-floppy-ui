@@ -13,7 +13,7 @@ class PageLoader extends Component {
   //
   render() {
     return <DynamicComponent
-      import={() => System.import( /* webpackChunkName: "router" */ '../FloppyUI')}
+      import={() => System.import( /* webpackChunkName: "ui" */ '../FloppyUI')}
       spin={true}
     />
   }

@@ -2,81 +2,16 @@
     background: #f8f9fa !important;
 }
 
+#root > div > nav {
+    margin-bottom: 0.25em;
+}
+
 /* Used in tables with a cog icon/dropdown menu */
 .cog div.dropdown button {
     line-height: 1;
     margin: 0;
     padding: 0;
     width: 3em;
-}
-
-/**/
-
-.uiOuter {
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-}
-
-.uiOuter > .title {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    text-align: center;
-    background: black;
-    color: white;
-    font-size: 2em;
-    font-weight: bold;
-}
-
-.uiOuter > .toolbar {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 2.8em;
-    height: 2em;
-    border: 1px groove grey;
-}
-
-.uiOuter > .statusBar {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 2em;
-    border: 1px groove grey;
-}
-
-.browseOuter {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 2.1em;
-    top: 4.9em;
-    overflow: hidden;
-}
-
-.browserRight {
-    position: absolute;
-    bottom: 0em;
-    top: 0em;
-    border: 1px groove grey;
-    margin: 0.125em;
-}
-
-.browserLeft {
-    left: 0;
-    right: 50%;
-    overflow: auto;
-}
-
-.browserRight {
-    left: 50%;
-    right: 0;
-    overflow: auto;
 }
 
 .volumeInfo {
@@ -118,6 +53,7 @@
 .consolePanel {
     overflow-y: hidden;
     overflow-x: auto;
+    padding-bottom: .2em;
 }
 
 .consolePanel .consoleLine {

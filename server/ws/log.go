@@ -8,8 +8,12 @@ import (
 )
 
 var logger *WS
+var lastTime time.Time
 
-const timeFormat = "2006/01/02 15:04:05 "
+const (
+  timeFormat = "15:04:05 "
+  dateFormat = "2006/01/02"
+)
 
 func Print(v ...interface{}) {
   logout(fmt.Sprint(v...))
@@ -31,7 +35,13 @@ func logout(s string) {
 }
 
 func (w *WS) log(s string) {
-  t := time.Now().Format(timeFormat)
+  now := time.Now()
+  t := now.Format(timeFormat)
+
+  if lastTime.IsZero() || now.Day() != lastTime.Day() {
+    w.logImpl(now.Format(dateFormat))
+  }
+  lastTime = now
 
   if s == "" {
     return

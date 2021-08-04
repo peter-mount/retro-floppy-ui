@@ -13,7 +13,8 @@ class Volume extends Component {
   }
 
   componentDidMount() {
-    this.refresh()
+    const t = this;
+    setTimeout(() => t.refresh(), 100)
   }
 
   refresh() {

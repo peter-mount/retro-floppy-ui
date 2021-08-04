@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
@@ -9,7 +11,6 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/App.css';
-//import '../css/materialicons.css';
 import '../css/floppyui.css';
 
 import {faPowerOff} from '@fortawesome/free-solid-svg-icons/faPowerOff';
@@ -66,24 +67,58 @@ class FloppyUI extends Component {
 
   componentDidMount() {
     const t = this;
+    setTimeout(() => t.connectWS(), 100)
+  }
 
-    let url = (location.protocol === 'http:' ? 'ws:' : 'wss:') + '//' + document.domain + '/ws'
-    console.log("WS connect", url)
-    t.socket = new WebSocket(url);
-    t.socket.addEventListener("message", e => t.handleWS(e))
-    /*
-        t.socket.addEventListener("open", e => {
-          console.log("Open")
-          // TODO for now send a message that the front end has connected. Probably will remove this later.
-          t.socket.send(JSON.stringify({id: "fe"}))
-        })
-    */
+  connectWS() {
+    const t = this;
+    clearTimeout(t.wsTimer);
+
+    // issue /api/status call - this will fail quicker than ws if the server is offline
+    // but apache is up
+    fetch('/api/status')
+      .then(response => {
+        if (response.status !== 200) {
+          console.log("status", response.status)
+          t.failWS()
+        } else {
+          // Connect the websocket
+          let url = (location.protocol === 'http:' ? 'ws:' : 'wss:') + '//' + document.domain + '/ws'
+          console.log("WS connect", url)
+          t.socket = new WebSocket(url);
+          t.socket.addEventListener("message", e => t.handleWS(e))
+          t.socket.addEventListener("open", e => {
+            console.log("WS Open")
+            if (t.state && t.state.modal) {
+              location.reload()
+            }
+            //t.setState({modal: false})
+            // TODO for now send a message that the front end has connected. Probably will remove this later.
+            //t.socket.send(JSON.stringify({id: "fe"}))
+          })
+          t.socket.addEventListener("close", e => {
+            console.log("WS closed")
+            t.failWS()
+          })
+        }
+      })
+      .catch(e => {
+        console.log("api failure")
+        t.failWS()
+      })
+  }
+
+  failWS() {
+    const t = this;
+    t.setState({modal: true})
+    t.wsTimer = setTimeout(() => t.connectWS(), 5000)
   }
 
   render() {
     const t = this,
       s = t.state;
 
+    console.log(s);
     return (
       <div>
         <Navbar bg="light" variant="light" expand="sm">
@@ -115,6 +150,22 @@ class FloppyUI extends Component {
             </Navbar.Collapse>
           </Container>
         </Navbar>
+        <Modal show={s.modal === true}
+               backdrop="static"
+               keyboard={false}>
+          <Modal.Header>
+            <Modal.Title>Server disconnected</Modal.Title>
+          </Modal.Header>
+
+          <Modal.Body>
+            <p>The server has disconnected. Press Reload to try to reconnect.</p>
+            <p>If the server comes back online this page will reload.</p>
+          </Modal.Body>
+
+          <Modal.Footer>
+            <Button variant="primary" onClick={() => location.reload()}>Reload</Button>
+          </Modal.Footer>
+        </Modal>
         <Container>
           <Row>
             <Col xs={6}>

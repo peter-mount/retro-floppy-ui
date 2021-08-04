@@ -25,7 +25,7 @@ class MountedVolumes extends Component {
       mount: t.wshandler,
       unmount: t.wshandler,
     })
-    this.refresh()
+    setTimeout(() => t.refresh(), 100)
   }
 
   componentWillUnmount() {

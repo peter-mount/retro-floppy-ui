@@ -20,15 +20,16 @@ class MountedDisk extends Component {
       unmount: t.wshandler,
     })
 
-    fetch("/api/list")
-      .then(res => res.json())
-      .then(f => t.setState({
-        volume: f.mounted,
-        file: f.file,
-      }))
-      .catch(e => {
-        console.error(url, e)
-      })
+    setTimeout(() => fetch("/api/list")
+        .then(res => res.json())
+        .then(f => t.setState({
+          volume: f.mounted,
+          file: f.file,
+        }))
+        .catch(e => {
+          console.error(url, e)
+        })
+      , 100)
   }
 
   componentWillUnmount() {
@@ -88,7 +89,7 @@ class MountedDisk extends Component {
           </Card.Text>
         </Card.Body>
         <Card.Footer>
-          <Button disabled={!mounted} onSelect={e => t.unmountDisk(e)}>Unmount Disk</Button>
+          <Button disabled={!mounted} onClick={e => t.unmountDisk(e)}>Unmount Disk</Button>
         </Card.Footer>
       </Card>
     )
