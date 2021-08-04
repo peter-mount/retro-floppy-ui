@@ -27,7 +27,7 @@ class MountedDisk extends Component {
           file: f.file,
         }))
         .catch(e => {
-          console.error(url, e)
+          console.error( e)
         })
       , 100)
   }

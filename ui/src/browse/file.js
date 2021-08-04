@@ -15,7 +15,7 @@ class File extends Component {
   doubleClick(e) {
     fetch('/api/mount/' + this.props.info.fullPath)
       .catch(e => {
-        console.error(url, e)
+        console.error(e)
       })
   }
 
