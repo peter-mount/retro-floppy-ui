@@ -69,7 +69,27 @@ class FloppyUI extends Component {
 
   componentDidMount() {
     const t = this;
+    t.wsHandler = e => t.handleWSMessage(e)
+    t.register({
+      notice: t.wsHandler,
+    })
     setTimeout(() => t.connectWS(), 100)
+  }
+
+  componentWillUnmount() {
+    this.unregister(this.wsHandler)
+  }
+
+  handleWSMessage(e) {
+    const t = this;
+    switch (e.id) {
+      case "notice":
+        t.setState({
+          notice: e,
+          update: new Date()
+        });
+        return
+    }
   }
 
   connectWS() {
@@ -102,8 +122,31 @@ class FloppyUI extends Component {
 
   render() {
     const t = this,
-      s = t.state;
+      s = t.state,
+      modal = s.disconnected
+        ? <Modal show={true} backdrop="static" keyboard={false}>
+          <Modal.Header>
+            <Modal.Title>Server disconnected</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <p>The server has disconnected. Press Reload to try to reconnect.</p>
+            <p>If the server comes back online this page will reload.</p>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="primary" onClick={() => location.reload()}>Reload</Button>
+          </Modal.Footer>
+        </Modal>
+        : s.notice && s.notice.text
+          ? <Modal show={true}>
+            <Modal.Header closeButton>
+              <Modal.Title>{s.notice.title ? s.notice.title : "Notice"}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>{s.notice.text}</Modal.Body>
+            {s.notice.subText ? <Modal.Footer>{s.notice.subText}</Modal.Footer> : null}
+          </Modal>
+          : null;
 
+    console.log(modal);
     console.log(s);
     return (
       <div>
@@ -118,7 +161,7 @@ class FloppyUI extends Component {
                 <NavDropdown title={<span><FontAwesomeIcon icon={faPowerOff}/></span>}>
                   <NavDropdown.Item>Logout</NavDropdown.Item>
                   <NavDropdown.Divider/>
-                  <NavDropdown.Item onSelect={e => t.updateSystem()}>Update system</NavDropdown.Item>
+                  <NavDropdown.Item onSelect={apiSystemUpdate}>Update system</NavDropdown.Item>
                   <NavDropdown.Item>Shutdown system</NavDropdown.Item>
                   <NavDropdown.Item>Reboot system</NavDropdown.Item>
                 </NavDropdown>
@@ -126,22 +169,7 @@ class FloppyUI extends Component {
             </Navbar.Collapse>
           </Container>
         </Navbar>
-        <Modal show={s.disconnected === true}
-               backdrop="static"
-               keyboard={false}>
-          <Modal.Header>
-            <Modal.Title>Server disconnected</Modal.Title>
-          </Modal.Header>
-
-          <Modal.Body>
-            <p>The server has disconnected. Press Reload to try to reconnect.</p>
-            <p>If the server comes back online this page will reload.</p>
-          </Modal.Body>
-
-          <Modal.Footer>
-            <Button variant="primary" onClick={() => location.reload()}>Reload</Button>
-          </Modal.Footer>
-        </Modal>
+        {modal}
         <Container>
           <Row>
             <Col xs={6}>
@@ -163,10 +191,6 @@ class FloppyUI extends Component {
         </Container>
       </div>
     )
-  }
-
-  updateSystem() {
-    apiSystemUpdate()
   }
 }
 
