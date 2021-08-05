@@ -51,15 +51,14 @@
 }
 
 .consolePanel {
-    overflow-y: hidden;
-    overflow-x: auto;
+    overflow: hidden;
+    text-wrap: none;
     padding-bottom: .2em;
+    font-family: monospace, Monospaced;
+    font-size: .75vw; /* 80 col width so 80/100 in vw units then it fits regardless of container size. reduce to .75 to stop wrapping last char */
 }
 
 .consolePanel .consoleLine {
-    font-family: monospace, Monospaced;
-    font-size: 1em;
-    height: calc(1em + 1px);
+    height: calc(1em + 2px); /* 1em +2px to stop descenders overlapping next row */
     display: block;
-    width: 80em;
 }
