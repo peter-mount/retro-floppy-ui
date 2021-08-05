@@ -4,6 +4,7 @@ import {faMinusSquare, faPlusSquare, faHdd} from '@fortawesome/free-regular-svg-
 import {faHdd as faHddSelected} from '@fortawesome/free-solid-svg-icons';
 import File from "./file";
 import Folder from "./folder";
+import {apiListFolder} from "../util/api";
 
 class Volume extends Component {
 
@@ -22,14 +23,7 @@ class Volume extends Component {
 
     // Only refresh if we have a volume, undefined means none selected
     if (p.name) {
-      let url = '/api/list/' + p.name + "/";
-
-      fetch(url)
-        .then(res => res.json())
-        .then(f => t.setState({file: f}))
-        .catch(e => {
-          console.error(url, e)
-        })
+      apiListFolder(p.name, "", f => t.setState({file: f}))
     }
   }
 

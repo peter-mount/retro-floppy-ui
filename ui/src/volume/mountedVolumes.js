@@ -9,6 +9,7 @@ import Disksize from "../util/disksize";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faCog, faPlus, faMinus} from '@fortawesome/free-solid-svg-icons';
 import {faUsb} from '@fortawesome/free-brands-svg-icons';
+import {apiList, apiMount, apiUnmount} from "../util/api";
 
 /* MountedVolumes lists the available volumes in the UI */
 class MountedVolumes extends Component {
@@ -53,16 +54,8 @@ class MountedVolumes extends Component {
   }
 
   refresh() {
-    const t = this, p = t.props, s = t.state;
-
-    let url = '/api/list';
-
-    fetch(url)
-      .then(res => res.json())
-      .then(f => t.update(t, f))
-      .catch(e => {
-        console.error(url, e)
-      })
+    const t = this;
+    apiList(f => t.update(t, f))
   }
 
   update(t, f) {
@@ -73,21 +66,11 @@ class MountedVolumes extends Component {
   }
 
   mountVolume(n) {
-    const t = this, s = t.state;
-    fetch("/api/mount/" + n)
-      .then(res => res.json())
-      .catch(e => {
-        console.error(e)
-      })
+    apiMount(n)
   }
 
   unmountVolume(n) {
-    const t = this, s = t.state;
-    fetch("/api/unmount/" + n)
-      .then(res => res.json())
-      .catch(e => {
-        console.error(e)
-      })
+    apiUnmount(n)
   }
 
   render() {

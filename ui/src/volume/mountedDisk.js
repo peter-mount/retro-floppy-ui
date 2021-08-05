@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Table from "react-bootstrap/Table";
+import {apiLater, apiList} from "../util/api";
 
 /* MountedVolumes lists the available volumes in the UI */
 class MountedDisk extends Component {
@@ -20,16 +21,10 @@ class MountedDisk extends Component {
       unmount: t.wshandler,
     })
 
-    setTimeout(() => fetch("/api/list")
-        .then(res => res.json())
-        .then(f => t.setState({
-          volume: f.mounted,
-          file: f.file,
-        }))
-        .catch(e => {
-          console.error( e)
-        })
-      , 100)
+    apiList(f => t.setState({
+      volume: f.mounted,
+      file: f.file,
+    }))
   }
 
   componentWillUnmount() {

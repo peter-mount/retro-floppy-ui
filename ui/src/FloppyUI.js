@@ -19,6 +19,8 @@ import MountedDisk from "./volume/mountedDisk";
 import VolumeBrowser from "./browse/volumeBrowser";
 import DiskInfo from "./disc/discViewer";
 import LogViewer from "./util/LogViewer";
+import {apiStatus, apiSystemUpdate} from "./util/api";
+import {newWebsocket} from "./util/ws";
 
 class FloppyUI extends Component {
 
@@ -76,41 +78,25 @@ class FloppyUI extends Component {
 
     // issue /api/status call - this will fail quicker than ws if the server is offline
     // but apache is up
-    fetch('/api/status')
-      .then(response => {
-        if (response.status !== 200) {
-          console.log("status", response.status)
-          t.failWS()
-        } else {
-          // Connect the websocket
-          let url = (location.protocol === 'http:' ? 'ws:' : 'wss:') + '//' + document.domain + '/ws'
-          console.log("WS connect", url)
-          t.socket = new WebSocket(url);
-          t.socket.addEventListener("message", e => t.handleWS(e))
-          t.socket.addEventListener("open", e => {
-            console.log("WS Open")
-            if (t.state && t.state.modal) {
+    apiStatus(
+      response => {
+        t.socket = newWebsocket(
+          e => t.handleWS(e),
+          e => {
+            if (t.state && t.state.disconnected) {
               location.reload()
             }
-            //t.setState({modal: false})
-            // TODO for now send a message that the front end has connected. Probably will remove this later.
-            //t.socket.send(JSON.stringify({id: "fe"}))
-          })
-          t.socket.addEventListener("close", e => {
-            console.log("WS closed")
-            t.failWS()
-          })
-        }
-      })
-      .catch(e => {
-        console.log("api failure")
-        t.failWS()
-      })
+          },
+          e => t.failWS()
+        )
+      },
+      e => t.failWS()
+    )
   }
 
   failWS() {
     const t = this;
-    t.setState({modal: true})
+    t.setState({disconnected: true})
     t.wsTimer = setTimeout(() => t.connectWS(), 5000)
   }
 
@@ -140,7 +126,7 @@ class FloppyUI extends Component {
             </Navbar.Collapse>
           </Container>
         </Navbar>
-        <Modal show={s.modal === true}
+        <Modal show={s.disconnected === true}
                backdrop="static"
                keyboard={false}>
           <Modal.Header>
@@ -180,8 +166,7 @@ class FloppyUI extends Component {
   }
 
   updateSystem() {
-    fetch("/api/system/update")
-      .catch(e => console.log(e))
+    apiSystemUpdate()
   }
 }
 

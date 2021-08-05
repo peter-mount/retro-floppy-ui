@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faFolder, faFolderOpen} from '@fortawesome/free-regular-svg-icons';
 import File from "./file";
+import {apiListFolder} from "../util/api";
 
 class Folder extends Component {
 
@@ -24,14 +25,7 @@ class Folder extends Component {
   refresh() {
     const t = this, p = t.props, s = t.state;
 
-    let url = '/api/list/' + p.volume + '/' + s.path;
-
-    fetch(url)
-      .then(res => res.json())
-      .then(f => t.update(t, f))
-      .catch(e => {
-        console.error(url, e)
-      })
+    apiListFolder(p.volume, s.path, f => t.update(t, f))
   }
 
   update(t, f) {

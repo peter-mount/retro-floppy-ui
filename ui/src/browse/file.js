@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faSave} from '@fortawesome/free-regular-svg-icons';
+import {apiMount} from "../util/api";
 
 class File extends Component {
 
@@ -13,10 +14,7 @@ class File extends Component {
   }
 
   doubleClick(e) {
-    fetch('/api/mount/' + this.props.info.fullPath)
-      .catch(e => {
-        console.error(e)
-      })
+    apiMount(this.props.info.fullPath)
   }
 
   render() {

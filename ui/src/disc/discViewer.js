@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 
-import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Table from "react-bootstrap/Table";
 
@@ -19,18 +18,6 @@ class DiskInfo extends Component {
       diskInfo: t.wshandler,
       unmount: t.wshandler,
     })
-
-/*
-    fetch("/api/list")
-      .then(res => res.json())
-      .then(f => t.setState({
-        volume: f.mounted,
-        file: f.file,
-      }))
-      .catch(e => {
-        console.error(url, e)
-      })
-*/
   }
 
   componentWillUnmount() {
