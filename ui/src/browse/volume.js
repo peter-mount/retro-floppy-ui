@@ -47,6 +47,7 @@ class Volume extends Component {
             volume={p.name}
             path={f.path}
             info={f}
+            selectedDisk={p.selectedDisk}
           />
         })
 
@@ -58,6 +59,7 @@ class Volume extends Component {
             volume={p.name}
             path={f.path}
             info={f}
+            selected={p.selectedDisk === f.path}
           />
         })
 

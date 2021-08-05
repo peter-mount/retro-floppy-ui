@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Table from "react-bootstrap/Table";
-import {apiLater, apiList} from "../util/api";
+import {apiLater, apiList, apiUnmount} from "../util/api";
 
 /* MountedVolumes lists the available volumes in the UI */
 class MountedDisk extends Component {
@@ -55,10 +55,6 @@ class MountedDisk extends Component {
     }
   }
 
-  unmountDisk(e) {
-    console.log("Unmount disk")
-  }
-
   render() {
     const t = this,
       s = t.state,
@@ -83,9 +79,6 @@ class MountedDisk extends Component {
             </Table>
           </Card.Text>
         </Card.Body>
-        <Card.Footer>
-          <Button disabled={!mounted} onClick={e => t.unmountDisk(e)}>Unmount Disk</Button>
-        </Card.Footer>
       </Card>
     )
   }

@@ -67,13 +67,14 @@ class Folder extends Component {
             volume={p.volume}
             path={f.path}
             info={f}
+            selectedDisk={p.selectedDisk}
           />
         })
 
       files = s.file.files
         .filter(f => !f.dir)
         .map((f, i) => {
-          return <File key={f.path} volume={p.volume} path={f.path} info={f}/>
+          return <File key={f.path} volume={p.volume} path={f.path} info={f} selected={p.selectedDisk===f.path}/>
         })
 
       dirs.sort((a, b) => a.name < b.name)

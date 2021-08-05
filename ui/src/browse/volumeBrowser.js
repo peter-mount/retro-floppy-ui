@@ -15,14 +15,15 @@ class VolumeBrowser extends Component {
 
   componentDidMount() {
     const t = this, p = t.props;
-    t.wshandler = e => t.handleWS(e)
+    t.wsHandler = e => t.handleWS(e)
     p.ws.register({
-      exploreVolume: t.wshandler,
+      exploreVolume: t.wsHandler,
+      diskSelect: t.wsHandler,
     })
   }
 
   componentWillUnmount() {
-    this.props.ws.unregister(this.wshandler)
+    this.props.ws.unregister(this.wsHandler)
   }
 
   handleWS(e) {
@@ -31,6 +32,13 @@ class VolumeBrowser extends Component {
       case "exploreVolume":
         t.setState({
           volume: e.volume,
+          update: new Date()
+        });
+        return
+      case "diskSelect":
+        // Only update if we are the same volume
+        t.setState({
+          selectedDisk: s.volume === e.volume ? e.file : null,
           update: new Date()
         });
         return
@@ -46,7 +54,7 @@ class VolumeBrowser extends Component {
         <Card.Header>Volume: {s.volume ? s.volume : 'None selected'}</Card.Header>
         <Card.Body>
           <Card.Text>
-            <Volume name={s.volume}/>
+            <Volume name={s.volume} selectedDisk={s.selectedDisk}/>
           </Card.Text>
         </Card.Body>
         <Card.Footer>

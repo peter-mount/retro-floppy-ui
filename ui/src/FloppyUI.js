@@ -146,8 +146,6 @@ class FloppyUI extends Component {
           </Modal>
           : null;
 
-    console.log(modal);
-    console.log(s);
     return (
       <div>
         <Navbar bg="light" variant="light" expand="sm">
