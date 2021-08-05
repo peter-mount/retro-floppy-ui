@@ -14,7 +14,7 @@ func (e *LogStream) Flush() {
 func (e *LogStream) Write(p []byte) (int, error) {
 	n := 0
 	for _, b := range p {
-		if b == 10 {
+		if b == 10 || b == 13 {
 			e.Flush()
 		} else if b >= 32 {
 			e.b = append(e.b, b)
