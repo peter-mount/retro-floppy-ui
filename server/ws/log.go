@@ -2,47 +2,36 @@ package ws
 
 import (
 	"fmt"
-	"log"
 	"strings"
-	"time"
 )
 
 var logger *WS
-var lastTime time.Time
 
-const (
-	timeFormat = "15:04:05 "
-	dateFormat = "2006/01/02"
-)
-
+// Print equivalent to Println, for compatibility with the log package
 func Print(v ...interface{}) {
-	logout(fmt.Sprint(v...))
+	log(fmt.Sprint(v...))
 }
 
+// Println prints a log line, similar to the log package
 func Println(v ...interface{}) {
-	logout(fmt.Sprintln(v...))
+	log(fmt.Sprintln(v...))
 }
 
+// Printf prints a formatted line, similar to the log package
 func Printf(format string, v ...interface{}) {
-	logout(fmt.Sprintf(format, v...))
+	log(fmt.Sprintf(format, v...))
 }
 
-func logout(s string) {
-	log.Print(s)
+// log logs a string to syslog & clients if enabled
+func log(s string) {
+	fmt.Println(s)
 	if logger != nil {
 		logger.log(s)
 	}
 }
 
+// log broadcasts a log line, breaking it up into 80 char lines
 func (w *WS) log(s string) {
-	now := time.Now()
-	/*t := now.Format(timeFormat)
-
-	  if lastTime.IsZero() || now.Day() != lastTime.Day() {
-	    w.logImpl(now.Format(dateFormat))
-	  }*/
-	lastTime = now
-
 	if s == "" {
 		return
 	}
@@ -50,14 +39,13 @@ func (w *WS) log(s string) {
 	for _, l := range strings.Split(s, "\n") {
 		for len(l) > 80 {
 			w.logImpl(l[:80])
-			//w.logImpl(t + l[:80])
 			l = l[80:]
 		}
 		w.logImpl(l)
-		//w.logImpl(t + l)
 	}
 }
 
+// logImpl broadcasts the log line to clients
 func (w *WS) logImpl(s string) {
 	_ = w.Broadcast(Message{
 		ID:    "log",
