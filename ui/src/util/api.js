@@ -51,4 +51,10 @@ export const
   // System
   //
   // apiSystemUpdate - Update Raspberry PI OS on the host
-  apiSystemUpdate = () => apiRawCall('/api/system/update', null);
+  apiSystemUpdate = () => apiRawCall('/api/system/update', null),
+  //
+  // apiSystemReboot - Reboots the Raspberry PI
+  apiSystemReboot = () => apiRawCall('/api/system/reboot', null),
+  //
+  // apiSystemShutdown - Reboots the Raspberry PI
+  apiSystemShutdown = () => apiRawCall('/api/system/shutdown', null);

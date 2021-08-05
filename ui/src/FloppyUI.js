@@ -19,7 +19,7 @@ import MountedDisk from "./volume/mountedDisk";
 import VolumeBrowser from "./browse/volumeBrowser";
 import DiskInfo from "./disc/discViewer";
 import LogViewer from "./util/LogViewer";
-import {apiStatus, apiSystemUpdate} from "./util/api";
+import {apiStatus, apiSystemReboot, apiSystemShutdown, apiSystemUpdate} from "./util/api";
 import {newWebsocket} from "./util/ws";
 
 class FloppyUI extends Component {
@@ -162,8 +162,8 @@ class FloppyUI extends Component {
                   <NavDropdown.Item>Logout</NavDropdown.Item>
                   <NavDropdown.Divider/>
                   <NavDropdown.Item onSelect={apiSystemUpdate}>Update system</NavDropdown.Item>
-                  <NavDropdown.Item>Shutdown system</NavDropdown.Item>
-                  <NavDropdown.Item>Reboot system</NavDropdown.Item>
+                  <NavDropdown.Item onSelect={apiSystemReboot}>Reboot system</NavDropdown.Item>
+                  <NavDropdown.Item onSelect={apiSystemShutdown}>Shutdown system</NavDropdown.Item>
                 </NavDropdown>
               </Nav>
             </Navbar.Collapse>

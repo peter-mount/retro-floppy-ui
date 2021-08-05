@@ -93,7 +93,11 @@ func (a *Api) PostInit() error {
 	restService.Handle(path, a.db.put).Methods("PUT", "POST")
 	restService.Handle(path, a.db.put).Methods("DELETE")
 
+	// System admin
 	restService.Handle("/api/system/update", a.updateSystem).Methods("GET")
+	restService.Handle("/api/system/reboot", a.rebootSystem).Methods("GET")
+	restService.Handle("/api/system/shutdown", a.shutdownSystem).Methods("GET")
+
 	// Websocket
 	restService.HandleFunc("/ws", a.ws.ServeWs)
 	return nil
