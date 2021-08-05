@@ -47,14 +47,15 @@ func (a *Api) shutdownSystem(r *rest.Rest) error {
 }
 
 func (a *Api) shutdown(t, f string, r *rest.Rest) error {
-	a.systemRun("", "System "+t+" started", shutdownTask(f))
+	a.systemRun("", "System "+t+" started", shutdownTask("", f))
 	r.Status(200)
 	return nil
 }
 
-func shutdownTask(f string) systemTask {
+func shutdownTask(t, f string) systemTask {
 	return systemTask{
 		Delay: 2 * time.Second, // Delay to allow notice to go out
+		Title: t,
 		Task:  []string{"shutdown", f, "now"},
 	}
 }
@@ -74,7 +75,7 @@ func (a *Api) updateSystem(r *rest.Rest) error {
 			Task:  []string{"apt", "autoremove", "-y"},
 		},
 		// Reboot once update has completed. Must be done if kernel is updated when ToTek mounting fails until reboot.
-		shutdownTask("-r"),
+		shutdownTask("reboot", "-r"),
 	)
 	r.Status(200)
 	return nil
