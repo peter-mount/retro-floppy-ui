@@ -12,6 +12,7 @@ type volumeList struct {
 	Volumes map[string]unix.Statfs_t `json:"volumes"` // Map of volumes & their capacities
 }
 
+// listVolumes lists all available volumes, which one is currently mounted on the GoTek & which disk is loaded.
 func (a *Api) listVolumes(r *rest.Rest) error {
 
 	volumeList := volumeList{
@@ -42,6 +43,7 @@ func (a *Api) listVolumes(r *rest.Rest) error {
 	return nil
 }
 
+// mountVolume mounts a volume onto the GoTek
 func (a *Api) mountVolume(r *rest.Rest) error {
 	volumeName := r.Var("volume")
 	if a.vm.GetVolume(volumeName) == nil {
@@ -61,6 +63,7 @@ func (a *Api) mountVolume(r *rest.Rest) error {
 	return nil
 }
 
+// unmountVolume unmounts a volume from the GoTek
 func (a *Api) unmountVolume(r *rest.Rest) error {
 	volumeName := r.Var("volume")
 	if a.vm.GetVolume(volumeName) == nil {

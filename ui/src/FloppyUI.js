@@ -132,11 +132,11 @@ class FloppyUI extends Component {
             <Modal.Title>Server disconnected</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <p>The server has disconnected. Press Reload to try to reconnect.</p>
-            <p>If the server comes back online this page will reload.</p>
+            <p>The server has disconnected. This page will reload if the server comes back online.</p>
+            <p>Pressing reload will try immediately but is usually unnecessary.</p>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="primary" onClick={() => location.reload()}>Reload</Button>
+            <Button variant="primary" onClick={() => location.reload()}>Reload now</Button>
           </Modal.Footer>
         </Modal>
         : s.notice && s.notice.text

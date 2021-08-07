@@ -87,8 +87,12 @@ func (a *Api) PostInit() error {
 	restService.Handle("/api/mount/{volume}", a.mountVolume).Methods("GET")
 	restService.Handle("/api/unmount/{volume}", a.unmountVolume).Methods("GET")
 
+	// Volume admin
+	path := "/api/volume/{volume}"
+	restService.Handle(path+"/{size:[0-9]+[mg]}", a.volumeCreate).Methods("PUT")
+
 	// DB access - used for UI persistence
-	path := "/api/data/{bucket}/{key:[0-9a-zA-Z/._ -]*}"
+	path = "/api/data/{bucket}/{key:[0-9a-zA-Z/._ -]*}"
 	restService.Handle(path, a.db.get).Methods("GET")
 	restService.Handle(path, a.db.put).Methods("PUT", "POST")
 	restService.Handle(path, a.db.put).Methods("DELETE")

@@ -25,6 +25,7 @@ class MountedVolumes extends Component {
     p.ws.register({
       mount: t.wshandler,
       unmount: t.wshandler,
+      newVolume: t.wshandler,
     })
     setTimeout(() => t.refresh(), 100)
   }
@@ -36,6 +37,7 @@ class MountedVolumes extends Component {
   handleWS(e) {
     const t = this, s = t.state;
     switch (e.id) {
+      // Disk mounted so set state to show usb icon against mounted volume
       case "mount":
         t.setState({
           volumes: s.volumes,
@@ -43,6 +45,7 @@ class MountedVolumes extends Component {
           update: new Date()
         });
         return
+      // Disk unmounted so remove any usb icon
       case "unmount":
         t.setState({
           volumes: s.volumes,
@@ -50,19 +53,19 @@ class MountedVolumes extends Component {
           update: new Date()
         })
         return
+      // new volume created so refresh
+      case "newVolume":
+        t.refresh()
+        return
     }
   }
 
   refresh() {
     const t = this;
-    apiList(f => t.update(t, f))
-  }
-
-  update(t, f) {
-    t.setState({
+    apiList(f => t.setState({
       volumes: f,
       mounted: f ? f.mounted : null,
-    });
+    }))
   }
 
   mountVolume(n) {
