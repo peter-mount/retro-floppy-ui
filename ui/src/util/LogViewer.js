@@ -49,7 +49,7 @@ class LogViewer extends Component {
   }
 
   handleWS(e) {
-    const t = this, s = t.state;
+    const t = this;
     switch (e.id) {
       case "log":
         t.log(e.value)

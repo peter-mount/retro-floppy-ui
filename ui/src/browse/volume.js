@@ -1,11 +1,8 @@
 import React, {Component} from 'react';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faMinusSquare, faPlusSquare, faHdd} from '@fortawesome/free-regular-svg-icons';
-import {faHdd as faHddSelected} from '@fortawesome/free-solid-svg-icons';
-import File from "./file";
-import Folder from "./folder";
+import {parseFolder} from "./folder";
 import {apiListFolder} from "../util/api";
 
+// Volume handles the root folder in a volume.
 class Volume extends Component {
 
   constructor(props) {
@@ -22,8 +19,8 @@ class Volume extends Component {
     const t = this, p = t.props;
 
     // Only refresh if we have a volume, undefined means none selected
-    if (p.name) {
-      apiListFolder(p.name, "", f => t.setState({file: f}))
+    if (p.volume) {
+      apiListFolder(p.volume, "", f => t.setState({file: f}))
     }
   }
 
@@ -36,36 +33,7 @@ class Volume extends Component {
       t.refresh()
     }
 
-    let dirs = null, files = null;
-
-    if (s.file && s.file.files) {
-      dirs = s.file.files
-        .filter(f => f.dir)
-        .map((f, i) => {
-          return <Folder
-            key={f.path}
-            volume={p.name}
-            path={f.path}
-            info={f}
-            selectedDisk={p.selectedDisk}
-          />
-        })
-
-      files = s.file.files
-        .filter(f => !f.dir)
-        .map((f, i) => {
-          return <File
-            key={f.path}
-            volume={p.name}
-            path={f.path}
-            info={f}
-            selected={p.selectedDisk === f.path}
-          />
-        })
-
-      dirs.sort((a, b) => a.name < b.name)
-      files.sort((a, b) => a.name < b.name)
-    }
+    const [dirs, files] = parseFolder(s, p)
 
     return <div>{dirs}{files}</div>
   }

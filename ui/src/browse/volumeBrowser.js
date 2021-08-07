@@ -54,7 +54,7 @@ class VolumeBrowser extends Component {
         <Card.Header>Volume: {s.volume ? s.volume : 'None selected'}</Card.Header>
         <Card.Body>
           <Card.Text>
-            <Volume name={s.volume} selectedDisk={s.selectedDisk}/>
+            <Volume volume={s.volume} selectedDisk={s.selectedDisk}/>
           </Card.Text>
         </Card.Body>
         <Card.Footer>

@@ -4,6 +4,35 @@ import {faFolder, faFolderOpen} from '@fortawesome/free-regular-svg-icons';
 import File from "./file";
 import {apiListFolder} from "../util/api";
 
+export const parseFolder = (s, p) => {
+  let dirs = null, files = null;
+
+  if (s.file && s.file.files) {
+    dirs = s.file.files
+      .filter(f => f.dir)
+      .map((f, i) => {
+        return <Folder
+          key={f.path}
+          volume={p.volume}
+          path={f.path}
+          info={f}
+          selectedDisk={p.selectedDisk}
+        />
+      })
+
+    files = s.file.files
+      .filter(f => !f.dir)
+      .map((f, i) => {
+        return <File key={f.path} volume={p.volume} path={f.path} info={f} selected={p.selectedDisk === f.path}/>
+      })
+
+    dirs.sort((a, b) => a.name < b.name)
+    files.sort((a, b) => a.name < b.name)
+  }
+
+  return [dirs, files];
+}
+
 class Folder extends Component {
 
   constructor(props) {
@@ -56,30 +85,7 @@ class Folder extends Component {
       t.refresh()
     }
 
-    let dirs = null, files = null;
-
-    if (s.file && s.file.files) {
-      dirs = s.file.files
-        .filter(f => f.dir)
-        .map((f, i) => {
-          return <Folder
-            key={f.path}
-            volume={p.volume}
-            path={f.path}
-            info={f}
-            selectedDisk={p.selectedDisk}
-          />
-        })
-
-      files = s.file.files
-        .filter(f => !f.dir)
-        .map((f, i) => {
-          return <File key={f.path} volume={p.volume} path={f.path} info={f} selected={p.selectedDisk===f.path}/>
-        })
-
-      dirs.sort((a, b) => a.name < b.name)
-      files.sort((a, b) => a.name < b.name)
-    }
+    const [dirs, files] = parseFolder(s, p);
 
     return (<div className="folder">
       <span onClick={() => t.toggle(t)}>
