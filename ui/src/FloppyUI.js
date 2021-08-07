@@ -21,6 +21,9 @@ import DiskInfo from "./disc/discViewer";
 import LogViewer from "./util/LogViewer";
 import {apiStatus, apiSystemReboot, apiSystemShutdown, apiSystemUpdate} from "./util/api";
 import {newWebsocket} from "./util/ws";
+import {ProgressBar} from "react-bootstrap";
+
+const stepPC = (s, c) => c > 0 ? '' + Math.floor(s * 100 / c) + '%' : '0%';
 
 class FloppyUI extends Component {
 
@@ -141,7 +144,16 @@ class FloppyUI extends Component {
             <Modal.Header closeButton>
               <Modal.Title>{s.notice.title ? s.notice.title : "Notice"}</Modal.Title>
             </Modal.Header>
-            <Modal.Body>{s.notice.text}</Modal.Body>
+            <Modal.Body>
+              {s.notice.text}
+              {s.notice.stepCount > 1
+                ? <div><ProgressBar animated
+                                    variant="success"
+                                    label={stepPC(s.notice.step, s.notice.stepCount)}
+                                    now={s.notice.step}
+                                    max={s.notice.stepCount}/></div>
+                : null}
+            </Modal.Body>
             {s.notice.subText ? <Modal.Footer>{s.notice.subText}</Modal.Footer> : null}
           </Modal>
           : null;
@@ -156,7 +168,7 @@ class FloppyUI extends Component {
               <Nav className="me-auto">
               </Nav>
               <Nav>
-                <NavDropdown title={<span><FontAwesomeIcon icon={faPowerOff}/></span>}>
+                <NavDropdown align={'end'} title={<span><FontAwesomeIcon icon={faPowerOff}/></span>}>
                   <NavDropdown.Item>Logout</NavDropdown.Item>
                   <NavDropdown.Divider/>
                   <NavDropdown.Item onSelect={apiSystemUpdate}>Update system</NavDropdown.Item>
