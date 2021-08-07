@@ -22,6 +22,7 @@
 .folder > span {
     display: inline-block;
     width: 100%;
+    user-select: none; /* Disable text selection when double clicking */
 }
 
 .folder > span:hover {
