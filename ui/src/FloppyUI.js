@@ -58,7 +58,6 @@ class FloppyUI extends Component {
   handleWS(e) {
     e.data.split("\n").forEach(l => {
       let v = JSON.parse(l)
-      console.log("WS", v)
       let h = this.wshandlers[v.id]
       if (typeof h !== "undefined") {
         h.forEach(r => r(v))
@@ -132,12 +131,8 @@ class FloppyUI extends Component {
             <Modal.Title>Server disconnected</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <p>The server has disconnected. This page will reload if the server comes back online.</p>
-            <p>Pressing reload will try immediately but is usually unnecessary.</p>
+            <p>This page will reload if the server comes back online.</p>
           </Modal.Body>
-          <Modal.Footer>
-            <Button variant="primary" onClick={() => location.reload()}>Reload now</Button>
-          </Modal.Footer>
         </Modal>
         : s.notice && s.notice.text
           ? <Modal show={true}>

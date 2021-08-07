@@ -20,7 +20,7 @@ class Disksize extends Component {
       v = v / 1024
     }
 
-    return <span>{Math.floor(100 * v) / 100} {units[i]}</span>
+    return <span>{Math.ceil(100 * v) / 100} {units[i]}</span>
   }
 }
 
