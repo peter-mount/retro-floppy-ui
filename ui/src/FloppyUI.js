@@ -1,24 +1,19 @@
 import React, {Component} from 'react';
-import Button from "react-bootstrap/Button";
+import {BrowserRouter, Route} from 'react-router-dom';
 import Modal from "react-bootstrap/Modal";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/App.css';
 import '../css/floppyui.css';
 
+import MainPanel from "./mainPanel";
+
 import {faPowerOff} from '@fortawesome/free-solid-svg-icons/faPowerOff';
-import MountedVolumes from "./volume/mountedVolumes";
-import MountedDisk from "./volume/mountedDisk";
-import VolumeBrowser from "./browse/volumeBrowser";
-import DiskInfo from "./disc/discViewer";
-import LogViewer from "./util/LogViewer";
 import {apiStatus, apiSystemReboot, apiSystemShutdown, apiSystemUpdate} from "./util/api";
 import {newWebsocket} from "./util/ws";
 import {ProgressBar} from "react-bootstrap";
@@ -175,25 +170,11 @@ class FloppyUI extends Component {
           </Container>
         </Navbar>
         {modal}
-        <Container>
-          <Row>
-            <Col xs={6}>
-              <MountedVolumes ws={t}/>
-            </Col>
-            <Col xs={6}>
-              <MountedDisk ws={t}/>
-            </Col>
-          </Row>
-          <Row>
-            <Col xs={6}>
-              <VolumeBrowser ws={t}/>
-            </Col>
-            <Col xs={6}>
-              <DiskInfo ws={t}/>
-              <LogViewer ws={t}/>
-            </Col>
-          </Row>
-        </Container>
+        <BrowserRouter>
+          <div>
+            <Route exact pat='/'><MainPanel ws={t}/></Route>
+          </div>
+        </BrowserRouter>
       </div>
     )
   }
