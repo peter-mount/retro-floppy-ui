@@ -1,9 +1,9 @@
 package volume
 
 import (
-	"github.com/peter-mount/floppyui/server/util"
-	"github.com/peter-mount/floppyui/server/ws"
 	"github.com/peter-mount/go-kernel"
+	"github.com/peter-mount/retro-floppy-ui/server/util"
+	"github.com/peter-mount/retro-floppy-ui/server/ws"
 	"golang.org/x/sys/unix"
 	"os"
 	"sort"

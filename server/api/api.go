@@ -2,11 +2,11 @@ package api
 
 import (
 	"github.com/gorilla/handlers"
-	"github.com/peter-mount/floppyui/server/util"
-	"github.com/peter-mount/floppyui/server/volume"
-	"github.com/peter-mount/floppyui/server/ws"
 	"github.com/peter-mount/go-kernel"
 	"github.com/peter-mount/go-kernel/rest"
+	"github.com/peter-mount/retro-floppy-ui/server/util"
+	"github.com/peter-mount/retro-floppy-ui/server/volume"
+	"github.com/peter-mount/retro-floppy-ui/server/ws"
 )
 
 type Api struct {

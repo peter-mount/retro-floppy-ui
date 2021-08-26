@@ -1,10 +1,10 @@
 package server
 
 import (
-	api2 "github.com/peter-mount/floppyui/server/api"
-	"github.com/peter-mount/floppyui/server/util"
-	"github.com/peter-mount/floppyui/server/volume"
 	"github.com/peter-mount/go-kernel"
+	api2 "github.com/peter-mount/retro-floppy-ui/server/api"
+	"github.com/peter-mount/retro-floppy-ui/server/util"
+	"github.com/peter-mount/retro-floppy-ui/server/volume"
 )
 
 type Server struct {

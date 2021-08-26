@@ -1,9 +1,9 @@
 package api
 
 import (
-	"github.com/peter-mount/floppyui/server/volume"
-	"github.com/peter-mount/floppyui/server/ws"
 	"github.com/peter-mount/go-kernel/rest"
+	"github.com/peter-mount/retro-floppy-ui/server/volume"
+	"github.com/peter-mount/retro-floppy-ui/server/ws"
 	"os"
 	"path"
 	"sort"

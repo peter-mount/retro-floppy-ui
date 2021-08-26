@@ -1,8 +1,8 @@
 package api
 
 import (
-	"github.com/peter-mount/floppyui/server/volume"
 	"github.com/peter-mount/go-kernel/rest"
+	"github.com/peter-mount/retro-floppy-ui/server/volume"
 	"golang.org/x/sys/unix"
 )
 

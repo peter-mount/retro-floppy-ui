@@ -1,4 +1,4 @@
-module github.com/peter-mount/floppyui
+module github.com/peter-mount/retro-floppy-ui
 
 go 1.12
 
